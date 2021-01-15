@@ -1,0 +1,54 @@
+{%extends 'index.html'%}
+
+{%block title%} Register {%endblock title%}
+
+{%block page%}
+
+
+
+<section class="login py-5 border-top-1">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-8 align-item-center">
+                    <div class="border border">
+                        <h3 class="bg-gray p-4">Register Now</h3>
+                        <form method='POST'>
+                          {% csrf_token %}
+                            <fieldset class="p-4">
+                               <input type="text" placeholder="Enter Username*" name="uname" id="uname" class="border p-3 w-100 my-2" required >
+                                  <!--<input type="password" placeholder="Confirm Password*" class="border p-3 w-100 my-2">-->
+                                <input type="password" placeholder="Password*" name='psw' class="border p-3 w-100 my-2">
+                                <input type="text" placeholder="Enter First name*" name="fname" id="fname" class="border p-3 w-100 my-2" required>
+                                <input type="text" placeholder="Enter Last name*" name="lname" id="lname"  class="border p-3 w-100 my-2" required>
+                                </br>
+                                </br>
+                
+                                &nbsp;&nbsp;&nbsp;&nbsp;<label for="gender" ><b>Gender</b></label> &nbsp;
+                                    <input type="radio" value="M" name='gender'> Male &nbsp; | &nbsp;
+                                    <input  type="radio" value="F" name='gender'> Female <br>
+                                    </br>
+                                
+                                <input type="email" placeholder="Email*" name="email" class="border p-3 w-100 my-2">
+                                <input type="text" placeholder="Enter Contact Number*" name="Contact" id="contact" class="border p-3 w-100 my-2"  required>
+                                <div class="loggedin-forgot d-inline-flex my-3">
+                                <!-- for getting msg from view file -->
+                                
+                                        <input type="checkbox" id="registering" class="mt-1">
+                                        <label for="registering" class="px-2">By registering, you accept our <a class="text-primary font-weight-bold" href="terms-condition.html">Terms & Conditions</a></label>
+                                </div>
+                                {% if messages %}
+                                      {% for msg in messages %}
+                                             <h3>{{ msg }}</h3>
+                                     {% endfor %}
+                                {% endif %}
+                                <button type="submit" class="d-block py-3 px-4 bg-primary text-white border-0 rounded font-weight-bold">Register Now</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{%endblock%}
+

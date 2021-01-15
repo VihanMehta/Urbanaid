@@ -1,0 +1,72 @@
+{%extends 'index.html'%}
+
+{%block title%} Category {%endblock title%}
+
+{%block page%}
+
+<section class="page-search">
+	<div class="container justify-content-sm-center">
+		<div class="row justify-content-sm-center">
+			<div class="col-md-12">
+				<!-- Advance Search -->
+				<div class="advance-search">
+					<form>
+						<div class="form-row align-center">
+							<div class="form-group col-md-7">
+								<input type="text" class="form-control my-2 my-lg-0" id="inputtext4" placeholder="What are you looking for">
+							</div>
+							<div class="form-group col-md-3">
+								<button type="submit" class="btn btn-primary">Search Now</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section-sm">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="search-result bg-gray">
+					<h2>Results For "Electronics"</h2>
+					<p>123 Results on 12 December, 2017</p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+	
+				<div class="category-sidebar">
+					<div class="widget category-list">
+	
+	<h4 class="widget-header">All Category</h4>
+	{% for c in categories %}
+	<ul class="category-list">
+		<button class="btn"><li><a href="{{c.slug}}"><strong>{{c.CategoryName}}<strong></a></li></button>
+	</ul>
+	{% endfor %}
+</div>
+				</div>
+			</div>	<div class="product-grid-list">
+					<div class="row mt-3">
+						<div class="col-sm-11 col-lg-4 col-md-6">
+
+    					<!-- product card -->
+{% for service in services_list %}
+<div class="mt-5">
+<div class="card border-bottom" style="width: 18rem;">
+  <img class="card-img-top" src="{{service.image.url}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title"><a href="{% url 'urbanaid:serviceDetail' service.slug %}">{{service.ServiceName}}</a></h5>
+    <p class="card-text">{{servise.discription}}</p>
+    <a href="#" class="btn btn-primary">Rs:{{service.price}}</a>
+  </div>
+  </div>
+  </div>
+{% endfor %}
+</section>
+
+{%endblock%}
+
