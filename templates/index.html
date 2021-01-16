@@ -41,10 +41,8 @@
   <![endif]-->
 
 </head>
-
+{%block navbar %}
 <body class="body-wrapper">
-
-
 <section>
 	<div class="container">
 		<div class="row">
@@ -93,15 +91,11 @@
 		</div>
 	</div>
 </section>
-
-
-{%block page%}
-
-
+{%endblock navbar %}
 <!--===============================
 =            Hero Area            =
 ================================-->
-
+{%block content %}
 <section class="hero-area bg-1 text-center overly">
 	<!-- Container Start -->
 	<div class="container">
@@ -395,7 +389,7 @@
 	</div>
 	<!-- Container End -->
 </section>
-
+{%endblock content %}
 
 <!--====================================
 =            Call to Action            =
@@ -418,8 +412,6 @@
 	</div>
 	<!-- Container End -->
 </section>
-
-{%endblock%}
 
 <!--============================
 =            Footer            =
