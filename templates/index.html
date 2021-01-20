@@ -69,8 +69,8 @@
 						</ul>
 						<ul class="navbar-nav ml-auto mt-10">
 							<li class="nav-item">
-							{%  if request.session.UserName %}
-								<button class="nav-link login-button"> {{ request.session.UserName }}</button>
+							{%  if request.session.user %}
+								<button class="nav-link login-button"> {{ request.session.user }}</button>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link login-button" href="/logout">Logout</a>
@@ -208,9 +208,6 @@
 		</div>
 	</div>
 </div>
-
-
-
 					</div>
 					<div class="col-sm-12 col-lg-4">
 						<!-- product card -->
@@ -273,9 +270,6 @@
 		</div>
 	</div>
 </div>
-
-
-
 					</div>
 					<div class="col-sm-12 col-lg-4">
 						<!-- product card -->
@@ -307,14 +301,9 @@
 		</div>
 	</div>
 </div>
-
-
-
 					</div>
 				</div>
 			</div>
-			
-			
 		</div>
 	</div>
 </section>
@@ -389,7 +378,6 @@
 	</div>
 	<!-- Container End -->
 </section>
-{%endblock content %}
 
 <!--====================================
 =            Call to Action            =
@@ -416,61 +404,6 @@
 <!--============================
 =            Footer            =
 =============================-->
-
-<footer class="footer section section-sm">
-  <!-- Container Start -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-3 col-md-7 offset-md-1 offset-lg-0">
-        <!-- About -->
-        <div class="block about">
-          <!-- footer logo -->
-          <img src="images/logo-footer.png" alt="">
-          <!-- description -->
-          <p class="alt-color">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip ex ea commodo consequat.</p>
-        </div>
-      </div>
-      <!-- Link list -->
-      <div class="col-lg-2 offset-lg-1 col-md-3">
-        <div class="block">
-          <h4>Site Pages</h4>
-          <ul>
-            <li><a href="#">Boston</a></li>
-            <li><a href="#">How It works</a></li>
-            <li><a href="#">Deals & Coupons</a></li>
-            <li><a href="#">Articls & Tips</a></li>
-            <li><a href="terms-condition.html">Terms & Conditions</a></li>
-          </ul>
-        </div>
-      </div>
-      <!-- Link list -->
-      <div class="col-lg-2 col-md-3 offset-md-1 offset-lg-0">
-        <div class="block">
-          <h4>Admin Pages</h4>
-          <ul>
-            <li><a href="category.html">Category</a></li>
-            <li><a href="single.html">Single Page</a></li>
-            <li><a href="store.html">Store Single</a></li>
-            <li><a href="single-blog.html">Single Post</a>
-            </li>
-            <li><a href="blog.html">Blog</a></li>
-
-
-
-          </ul>
-        </div>
-      </div>
-      <!-- Promotion -->
-      <div class="col-lg-4 col-md-7">
-
-      </div>
-      </div>
-    </div>
-  </div>
-  <!-- Container End -->
-</footer>
 <!-- Footer Bottom -->
 <footer class="footer-bottom">
   <!-- Container Start -->
@@ -490,6 +423,8 @@
     <a id="top" class="" href="#"><i class="fa fa-angle-up"></i></a>
   </div>
 </footer>
+{%endblock content %}
+
 
 <!-- JAVASCRIPTS -->
 <script src="{% static 'plugins/jQuery/jquery.min.js' %}"></script>
@@ -503,10 +438,6 @@
 <script src="{% static 'plugins/jquery-nice-select/js/jquery.nice-select.min.js' %}"></script>
 <script src="{% static 'plugins/fancybox/jquery.fancybox.pack.js' %}"></script>
 <script src="{% static 'plugins/smoothscroll/SmoothScroll.min.js' %}"></script>
-<!-- google map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
-<script src="{% static 'plugins/google-map/gmap.js' %}"></script>
-<script src="{% static 'js/script.js' %}"></script>
 
 </body>
 

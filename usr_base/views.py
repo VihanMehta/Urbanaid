@@ -1,43 +1,123 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect, HttpResponseRedirect
 from usr_base.models import User_mst
+from django.contrib.auth.hashers import make_password,check_password
 from django.contrib import messages
+from django.views import View
 
 def index(request):
-    return render(request,'index.html')
+        return render(request,'index.html')
 
-def usr_reg(request):
-    if request.method=='POST':
-        model=User_mst()
-        model.UserName=request.POST['uname']
-        model.Password=request.POST['psw']
-        model.FirstName=request.POST['fname']
-        model.LastName=request.POST['lname']
-        model.Gender=request.POST['gender']
-        model.Email=request.POST['email']
-        model.ContactNo=request.POST['Contact']
-        model.save()
-        messages.success(request,'Success fully Register ! '+request.POST['uname'])
-        return render(request,'register.html')
-    else:
-        return render(request,'register.html')
+#--------------------Registeration----------------------------
+class Register(View):
 
-def usr_login(request):
-    if request.method=='POST':
-        try:
-            Userdetails=User_mst.objects.get(UserName=request.POST['uname'],Password=request.POST['psw'])
-            print("Username=",Userdetails)
-            request.session['UserName']=Userdetails.UserName
-            return render(request,'index.html')
-        except User_mst.DoesNotExist as e:
-            messages.success(request,'Username/Password invalid..!')
-    return render(request,'login.html')
+    def get(self, request):
+        return render(request, 'register.html')
+
+    def post(self, request):
+        postData = request.POST
+        UserName = postData.get('uname')
+        Password = postData.get('psw')
+        FirstName = postData.get('fname')
+        LastName = postData.get('lname')
+        Gender = postData.get('gender')
+        Email = postData.get('email')
+        ContactNo = postData.get('Contact')
+        
+        #---------------------- validation----------------------------
+        value = {
+            'UserName':UserName,
+            'FirstName': FirstName,
+            'LastName': LastName,
+            'ContactNo': ContactNo,
+            'Email': Email
+        }
+
+        error_message = None
+
+        new_user = User_mst(UserName=UserName,
+                            Password=Password,
+                            FirstName=FirstName,
+                            LastName=LastName,
+                            Gender=Gender,
+                            Email=Email,
+                            ContactNo=ContactNo)
+
+        error_message = self.validateCustomer(new_user)
+
+        if not error_message:
+            print(UserName, Password, FirstName, LastName, Gender, Email, ContactNo)
+            new_user.Password = make_password(new_user.Password)
+            new_user.register()
+            return redirect('index')
+        else:
+            data = {
+                'error': error_message,
+                'values': value
+            }
+            return render(request, 'register.html', data)
+
+    def validateCustomer(self, new_user):
+        error_message = None;
+        if len(new_user.UserName) < 4:
+            error_message = 'UserName must be 4 char long or more'
+        elif new_user.UserisExists():
+            error_message = 'UserName is Already Registered..'
+        elif len(new_user.FirstName) < 4:
+            error_message = 'First Name must be 4 char long or more'
+        elif len(new_user.ContactNo) < 6 :
+            error_message = 'Phone Number must be 10 char'
+        elif len(new_user.Password) < 6:
+            error_message = 'Password must be 6 char long'
+        elif len(new_user.Email) < 5:
+            error_message = 'Email must be 5 char long'
+        elif new_user.EmailisExists():
+            error_message = 'Email Address Already Registered..'
+        elif new_user.PhoneisExists():
+            error_message = 'Contact Number is Already Registered..'
+        elif not new_user.Gender:
+            error_message = 'Please Select Gender..'
+        # saving
+        return error_message
+
+#-------------------user login-------------------------
+
+class Login(View):
+    return_url = None
+    def get(self , request):
+        Login.return_url = request.GET.get('return_url')
+        return render(request , 'login.html')
+
+    def post(self , request):
+        UserName = request.POST.get('uname')
+        Password = request.POST.get('psw')
+        user = User_mst.get_User_mst_by_Email(UserName)
+        error_message = None
+        if user:
+            flag = check_password(Password, user.Password) #password Dycription 
+            if flag:
+                request.session['user'] = user.FirstName
+                if Login.return_url:
+                    return HttpResponseRedirect(Login.return_url)
+                else:
+                    Login.return_url = None
+                    return redirect('index')
+            else:
+                error_message = 'User name or Password invalid !!'
+        else:
+            error_message = 'User name or Password invalid !!'
+        print(UserName, Password)
+        return render(request, 'login.html', {'error': error_message})
+
+#-------------------user log out-------------------------
 
 def usr_logout(request):
     try:
-        del request.session['UserName']
+        del request.session['user']
     except:
-        return render(request,'index.html')
-    return render(request,'index.html')
+        return redirect('index')
+    return redirect('index')
+
+#------------------- Category -------------------------
 
 def category(request):
     return render(request,'category.html')

@@ -1,47 +1,53 @@
-{%extends 'index.html'%}
-
-{%block title%} Register {%endblock title%}
-
-{%block page%}
-
-
-
-<section class="login py-5 border-top-1">
+{%extends  'index.html'%}
+{%block title%} Register {%endblock title%} 
+{%block content %}
+<!--<script type="text/javascript">
+function validate() {  
+	var terms = document.getElementsByName("term");
+	if (!terms.checked)
+		alert("Please accept the Terms of Service and Privacy Policy");
+	    return false;
+    return true;
+}
+</script>-->
+<section class="login py-5 border-top-1 bg-info">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8 align-item-center">
                     <div class="border border">
-                        <h3 class="bg-gray p-4">Register Now</h3>
-                        <form method='POST'>
+                        <h2 class="bg-dark text-white p-4 justify-content-center"><center>Register Now</center></h2>
+                        <form method='POST' action="/register"class='bg-shadow'>
                           {% csrf_token %}
+                           {% if error%}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endif %}
                             <fieldset class="p-4">
-                               <input type="text" placeholder="Enter Username*" name="uname" id="uname" class="border p-3 w-100 my-2" required >
-                                  <!--<input type="password" placeholder="Confirm Password*" class="border p-3 w-100 my-2">-->
-                                <input type="password" placeholder="Password*" name='psw' class="border p-3 w-100 my-2">
-                                <input type="text" placeholder="Enter First name*" name="fname" id="fname" class="border p-3 w-100 my-2" required>
-                                <input type="text" placeholder="Enter Last name*" name="lname" id="lname"  class="border p-3 w-100 my-2" required>
-                                </br>
-                                </br>
-                
+                               <input type="text" placeholder="Enter Username*" name="uname" id="uname" value="{{values.UserName}}" class="border p-3 w-100 my-2" required autocomplete="off"  >
+                               <ul id="uname" class="text-danger font-weight-bold"></ul>
+                                <input type="password" placeholder="Password*" name='psw' id="pass" value="{{values.Password}}" class="border p-3 w-100 my-2" required autocomplete="off">
+                                <ul id="pass" class="text-danger font-weight-bold"></ul>
+                                <input type="text" placeholder="Enter First name*" name="fname" id="fname" value="{{values.FirstName}}"  class="border p-3 w-100 my-2" required autocomplete="off" >
+                                <ul id="fname" class="text-danger font-weight-bold"></ul>
+                                <input type="text" placeholder="Enter Last name*" name="lname" id="lname" value="{{values.LastName}}"  class="border p-3 w-100 my-2" required autocomplete="off">
+                                <ul id="lname" class="text-danger font-weight-bold"></ul>
+                                <hr>
                                 &nbsp;&nbsp;&nbsp;&nbsp;<label for="gender" ><b>Gender</b></label> &nbsp;
-                                    <input type="radio" value="M" name='gender'> Male &nbsp; | &nbsp;
-                                    <input  type="radio" value="F" name='gender'> Female <br>
-                                    </br>
-                                
-                                <input type="email" placeholder="Email*" name="email" class="border p-3 w-100 my-2">
-                                <input type="text" placeholder="Enter Contact Number*" name="Contact" id="contact" class="border p-3 w-100 my-2"  required>
+                                    <input type="radio" value="M" name='gender' id="genderM"> Male &nbsp; | &nbsp;
+                                    <input  type="radio" value="F" name='gender' id="genderF"> Female <br>
+                                    <hr>
+                                <span id="gender" class="text-danger font-weight-bold"></span>
+                                <input type="email" placeholder="Email*" name="email" id="email" value="{{values.Email}}" class="border p-3 w-100 my-2" required autocomplete="off">
+                                <ul id="email" class="text-danger font-weight-bold"></ul>
+                                <input type="text" placeholder="Enter Contact Number*" name="Contact" id="contact" value="{{values.ContactNo}}" class="border p-3 w-100 my-2"  required autocomplete="off" >
+                                <ul id="contact" class="text-danger font-weight-bold"></ul>
                                 <div class="loggedin-forgot d-inline-flex my-3">
                                 <!-- for getting msg from view file -->
-                                
-                                        <input type="checkbox" id="registering" class="mt-1">
+                                        <input type="checkbox" id="term" class="mt-1">
                                         <label for="registering" class="px-2">By registering, you accept our <a class="text-primary font-weight-bold" href="terms-condition.html">Terms & Conditions</a></label>
                                 </div>
-                                {% if messages %}
-                                      {% for msg in messages %}
-                                             <h3>{{ msg }}</h3>
-                                     {% endfor %}
-                                {% endif %}
-                                <button type="submit" class="d-block py-3 px-4 bg-primary text-white border-0 rounded font-weight-bold">Register Now</button>
+                                <button type="submit" class="d-block py-3 px-4 bg-primary text-white border-0 rounded font-weight-bold" onclick="return validate()">Register Now</button>
                             </fieldset>
                         </form>
                     </div>
@@ -49,6 +55,6 @@
             </div>
         </div>
     </section>
-
-{%endblock%}
+{%endblock content %}
+ 
 

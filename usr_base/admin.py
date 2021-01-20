@@ -5,5 +5,4 @@ from .models import User_mst
 @admin.register(User_mst)
 class userAdmin(admin.ModelAdmin):
     list_display= ['UserName','Password','FirstName','LastName','Gender','Email','ContactNo']
-    list_editable=['ContactNo','Password']
     
