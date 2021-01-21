@@ -1,19 +1,15 @@
-{% load static %}
 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <!-- SITE TITTLE -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
+  <title>UrbanAid</title>
   
-  <title>  {%block title%} Home {%endblock title%} | UrbanAid</title>
-
-
-
   <!-- FAVICON -->
   <link href="{% static 'images/favicon.png' %}" rel="shortcut icon">
   <!-- PLUGINS CSS STYLE -->
@@ -27,7 +23,7 @@
   <link href="{% static 'plugins/slick-carousel/slick/slick.css' %}" rel="stylesheet">
   <link href="{% static 'plugins/slick-carousel/slick/slick-theme.css' %}" rel="stylesheet">
   <!-- Fancy Box -->
-  <link href="{% static 'plugins/fancybox/jquery.fancybox.pack.css' %}" rel="stylesheet">
+  <link href="{% static 'plugins\font-awesome\css\font-awesome.css' %}" rel="stylesheet">
   <link href="{% static 'plugins/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
   <!-- CUSTOM CSS -->
   <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -41,32 +37,24 @@
   <![endif]-->
 
 </head>
-{%block navbar %}
+
 <body class="body-wrapper">
+
+{% block navbar %}
+
 <section>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<nav class="navbar navbar-expand-lg navbar-light navigation">
 					<a class="navbar-brand" href="index">
-						<img src="{% static 'images/Logo.png' %}" alt="" height="40" width="200">
+						<img src="{% static 'images/logo.png' %}" alt="" height="40" width="200">
 					</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav ml-auto main-nav ">
-							<li class="nav-item active">
-								<a class="nav-link" href="/index">Home</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="/contactUs">Contact Us</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="/aboutUs">About Us</a>
-							</li>
-						</ul>
 						<ul class="navbar-nav ml-auto mt-10">
 							<li class="nav-item">
 							{%  if request.session.user %}
@@ -80,9 +68,6 @@
 							<li class="nav-item">
 								<a class="nav-link login-button" href="/usr_login">Login</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link login-button" href="prof/login">Professional Login</a>
-							</li>
 							{% endif %}
 						</ul>
 					</div>
@@ -91,11 +76,12 @@
 		</div>
 	</div>
 </section>
-{%endblock navbar %}
+{% endblock navbar %}
 <!--===============================
 =            Hero Area            =
 ================================-->
-{%block content %}
+{% block content %}
+
 <section class="hero-area bg-1 text-center overly">
 	<!-- Container Start -->
 	<div class="container">
@@ -109,10 +95,10 @@
 						<h2>Popular Category</h2>
 						<ul class="list-inline">
 							<li class="list-inline-item">
-								<a href="/service"><i class="fa fa-grav"></i> Cuisines </a>
+								<a href="/service"><i class="fa fa-grav"></i> Salon Experts </a>
 							</li>
 							<li class="list-inline-item">
-								<a href="/service"><i class="fa fa-cutlery"></i> Salon Experts</a>
+								<a href="/service"><i class="fa fa-cutlery"></i> Cuisines </a>
 							</li>
 						</ul>
 					</div>
@@ -185,7 +171,7 @@
 		<div class="thumb-content">
 			<!-- <div class="price">$200</div> -->
 			<a href="single.html">
-					<img class="card-img-top img-fluid" src="{% static 'images/products/products-1.jpg' %}" alt="Card image cap">
+					<img class="card-img-top img-fluid" src="{% static '\images\products\products-1.jpg' %}" alt="Card image cap">
 			</a>
 		</div>
 		<div class="card-body">
@@ -208,6 +194,9 @@
 		</div>
 	</div>
 </div>
+
+
+
 					</div>
 					<div class="col-sm-12 col-lg-4">
 						<!-- product card -->
@@ -216,7 +205,7 @@
 		<div class="thumb-content">
 			<!-- <div class="price">$200</div> -->
 			<a href="single.html">
-				<img class="card-img-top img-fluid" src="{% static 'images/products/products-2.jpg' %}" alt="Card image cap">
+				<img class="card-img-top img-fluid" src="{% static '\images\products\products-2.jpg' %}" alt="Card image cap">
 			</a>
 		</div>
 		<div class="card-body">
@@ -247,7 +236,7 @@
 		<div class="thumb-content">
 			<!-- <div class="price">$200</div> -->
 			<a href="single.html">
-				<img class="card-img-top img-fluid" src="{% static 'images/products/products-3.jpg' %}" alt="Card image cap">
+				<img class="card-img-top img-fluid" src="{% static '\images\products\products-3.jpg' %}" alt="Card image cap">
 			</a>
 		</div>
 		<div class="card-body">
@@ -270,6 +259,9 @@
 		</div>
 	</div>
 </div>
+
+
+
 					</div>
 					<div class="col-sm-12 col-lg-4">
 						<!-- product card -->
@@ -278,7 +270,7 @@
 		<div class="thumb-content">
 			<!-- <div class="price">$200</div> -->
 			<a href="single.html">
-				<img class="card-img-top img-fluid" src="{% static 'images/products/products-4.jpg' %}" alt="Card image cap">
+				<img class="card-img-top img-fluid" src="{% static '\images\products\products-4.jpg' %}" alt="Card image cap">
 			</a>
 		</div>
 		<div class="card-body">
@@ -301,9 +293,14 @@
 		</div>
 	</div>
 </div>
+
+
+
 					</div>
 				</div>
 			</div>
+			
+			
 		</div>
 	</div>
 </section>
@@ -326,12 +323,24 @@
 				<div class="row">
 					<!-- Category list -->
 					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-home icon-bg-3"></i> 
+								<h4>Comming Soon</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="/service">--------- <span>93</span></a></li>
+								<li><a href="/service">--------- <span>23</span></a></li>
+								<li><a href="/service">--------- <span>83</span></a></li>
+								<li><a href="/service">--------- <span>33</span></a></li>
+							</ul>
+						</div>
 					</div> <!-- /service List -->
 					<!-- Category list -->
 					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
 						<div class="category-block">
 							<div class="header">
-								<i class="fa fa-apple icon-bg-2"></i> 
+								<i class="fa fa-home icon-bg-3"></i> 
 								<h4>Cuisines</h4>
 							</div>
 							<ul class="category-list" >
@@ -359,18 +368,18 @@
 					</div> <!-- /service List -->
 					<!-- Category list -->
 					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-					</div> <!-- /service List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-					</div> <!-- /service List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-					</div> <!-- /service List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-					</div> <!-- /service List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-home icon-bg-3"></i> 
+								<h4>Comming Soon</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="/service">--------- <span>93</span></a></li>
+								<li><a href="/service">--------- <span>23</span></a></li>
+								<li><a href="/service">--------- <span>83</span></a></li>
+								<li><a href="/service">--------- <span>33</span></a></li>
+							</ul>
+						</div>
 					</div> <!-- /service List -->
 				</div>
 			</div>
@@ -378,6 +387,7 @@
 	</div>
 	<!-- Container End -->
 </section>
+
 
 <!--====================================
 =            Call to Action            =
@@ -401,6 +411,7 @@
 	<!-- Container End -->
 </section>
 
+{% endblock content %}
 <!--============================
 =            Footer            =
 =============================-->
@@ -410,10 +421,22 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-6 col-12">
-        
+        <!-- Copyright -->
+        <div class="copyright">
+          <p>Copyright © <script>
+              var CurrentYear = new Date().getFullYear()
+              document.write(CurrentYear)
+            </script>. All Rights Reserved</a></p>
+        </div>
       </div>
       <div class="col-sm-6 col-12">
-        
+        <!-- Social Icons -->
+        <ul class="social-media-icons text-right">
+          <li><a class="fa fa-facebook" href="https://www.facebook.com/themefisher" target="_blank"></a></li>
+          <li><a class="fa fa-twitter" href="https://www.twitter.com/themefisher" target="_blank"></a></li>
+          <li><a class="fa fa-pinterest-p" href="https://www.pinterest.com/themefisher" target="_blank"></a></li>
+          <li><a class="fa fa-vimeo" href=""></a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -423,8 +446,6 @@
     <a id="top" class="" href="#"><i class="fa fa-angle-up"></i></a>
   </div>
 </footer>
-{%endblock content %}
-
 
 <!-- JAVASCRIPTS -->
 <script src="{% static 'plugins/jQuery/jquery.min.js' %}"></script>
@@ -438,6 +459,10 @@
 <script src="{% static 'plugins/jquery-nice-select/js/jquery.nice-select.min.js' %}"></script>
 <script src="{% static 'plugins/fancybox/jquery.fancybox.pack.js' %}"></script>
 <script src="{% static 'plugins/smoothscroll/SmoothScroll.min.js' %}"></script>
+<!-- google map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
+<script src="{% static 'plugins/google-map/gmap.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
 
 </body>
 

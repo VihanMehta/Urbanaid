@@ -1,15 +1,22 @@
 from django.shortcuts import render,get_list_or_404
 from django.views.generic import TemplateView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 
-class servicesView(TemplateView):
-    template_name="category.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['services_list'] = Service_mst.objects.all().order_by("-id")
-        context['categories'] = Category_mst.objects.all()
-        return context
+def paginator(request):
+    categories = Category_mst.objects.all()
+    all_post = Paginator(Service_mst.objects.filter(available = True),3)
+    page = request.GET.get('page')
+    try:
+	    posts = all_post.page(page)
+    except PageNotAnInteger:
+	    posts = all_post.page(1)
+    except EmptyPage:
+	    posts = all_post.page(all_post.num_pages)
+    return render(request, 'ad-list-view.html', 
+                    {'posts': posts,
+                       'categories':categories,
+                    }) 
 
 class servicedetailsView(TemplateView):
     template_name="single.html"
@@ -22,5 +29,3 @@ class servicedetailsView(TemplateView):
         stu = {"prof": data}
         context['services_list'] = services_list
         return context
-
-# Create your views here.
