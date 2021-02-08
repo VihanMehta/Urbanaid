@@ -178,7 +178,7 @@
 								<div class="product-review">
 									<div class="media">
 										<!-- Avater -->
-										<img src="images/user/user-thumb.jpg" alt="avater">
+										<img src="{% static 'images/user/user-thumb.jpg' %}" alt="avater">
 										<div class="media-body">
 											<!-- Ratings -->
 											<div class="ratings">
@@ -217,6 +217,7 @@
 									<div class="review-submission">
 										<h3 class="tab-title">Submit your review</h3>
 										<!-- Rate -->
+										{%  if request.session.user %}
 										<div class="rate">
 											<div class="starrr"></div>
 										</div>
@@ -236,6 +237,11 @@
 												</div>
 											</form>
 										</div>
+										{% else %}
+											<div class="alert alert-danger" role="alert">
+                                			<h5>You have to <a href="/usr_login"> loging </a>First </h5>
+                            			</div>
+										{% endif %}
 									</div>
 								</div>
 							</div>
@@ -292,8 +298,7 @@
         <div class="copyright">
           <p>Copyright © <script>
               var CurrentYear = new Date().getFullYear()
-              document.write(CurrentYear)
-            </script>. All Rights Reserved, theme by <a class="text-primary" href="https://themefisher.com" target="_blank">themefisher.com</a></p>
+              document.write(CurrentYear)</script>
         </div>
       </div>
     </div>

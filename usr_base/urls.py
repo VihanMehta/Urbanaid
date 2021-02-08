@@ -8,4 +8,8 @@ urlpatterns = [
     path('usr_login',Login.as_view()),
     path('register', Register.as_view(), name='Register'),
     path('logout',views.usr_logout),
+    path('profile',views.profile),
+    path('update_profile',views.update_profile),
+    path('contactUs',views.Contact),
+    path('aboutUs',views.about),
 ]

@@ -7,9 +7,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Service_mst)
 class ProductAdmin(admin.ModelAdmin):
-    list_display= ['ServiceName','slug','price','available','created','updated']
-    list_filter=['available','created','updated']
-    list_editable=['price','available']
+    list_display= ['ServiceName','slug','price','available','created','updated','rate']
+    list_filter=['available','created','updated','rate']
+    list_editable=['price','available','rate']
     prepopulated_fields={'slug':('ServiceName',)}
 
 @admin.register(Professional_mst)
@@ -18,3 +18,5 @@ class ProfesionalAdmin(admin.ModelAdmin):
     list_editable=['FirstName','LastName','Gender','Email','ContactNo','Qualification']
     list_filter=['Gender']
 
+
+    

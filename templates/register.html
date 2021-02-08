@@ -19,9 +19,12 @@ function validate() {
                         <form method='POST' action="/register"class='bg-shadow'>
                           {% csrf_token %}
                            {% if error%}
-                                <div class="alert alert-danger" role="alert">
-                                    {{error}}
-                                </div>
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>{{error}}</strong> 
+                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
                             {% endif %}
                             <fieldset class="p-4">
                                <input type="text" placeholder="Enter Username*" name="uname" id="uname" value="{{values.UserName}}" class="border p-3 w-100 my-2" required autocomplete="off"  >

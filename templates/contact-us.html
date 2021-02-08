@@ -1,0 +1,59 @@
+{%extends 'index.html'%}
+{% load static %}
+{%block title%} Contact Us {%endblock title%}
+
+{%block content%}
+
+
+<!-- contact us start-->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="contact-us-content p-4">
+                    <h5>Contact Us</h5>
+                    <h1 class="pt-3">Hello, what's on your mind?</h1>
+                    
+                </div>
+            </div>
+            <div class="col-md-6">
+                    <form method='POST' action='/contactUs'>
+                      {% csrf_token %}
+                        <fieldset class="p-4">
+                         {% if msg%}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>{{msg}}</strong> 
+                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-6 py-2">
+                                        <input type="text" placeholder="Name *" name='name'  autocomplete='off' class="form-control" required>
+                                    </div>
+                                    <div class="col-lg-6 pt-2">
+                                        <input type="email" placeholder="Email *" name='email' autocomplete='off' class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <textarea  id=""  placeholder="Message *" name='msg' class="border w-100 p-3 mt-3 mt-lg-4" required></textarea>
+                            <div class="btn-grounp">
+                                <button type="submit"  class="btn btn-primary mt-2 float-right">SUBMIT</button>
+                            </div>
+
+                            
+                        </fieldset>
+                    </form>
+        
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

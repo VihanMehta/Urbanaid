@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect, HttpResponseRedirect
-from usr_base.models import User_mst
+from usr_base.models import User_mst , contactus
 from django.contrib.auth.hashers import make_password,check_password
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.views import View
 
@@ -45,7 +47,7 @@ class Register(View):
         error_message = self.validateCustomer(new_user)
 
         if not error_message:
-            print(UserName, Password, FirstName, LastName, Gender, Email, ContactNo)
+            #print(UserName, Password, FirstName, LastName, Gender, Email, ContactNo)
             new_user.Password = make_password(new_user.Password)
             new_user.register()
             return redirect('index')
@@ -122,4 +124,36 @@ def usr_logout(request):
 def category(request):
     return render(request,'category.html')
 
+#------------------- User Profile -------------------------
+
+def profile(request):
+    return render(request,'profile.html')
+
+def update_profile(request):
+    return render(request,'update-profile.html')
+
+#------------------- Contact us -------------------------
+
+def Contact(request):
+    if request.method=='POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        msg = request.POST.get('msg')
+        data = contactus(
+            Name=name,
+            email=email,
+            Message= msg,
+        )
+        data.save()
+        m= "we catch you soon "+ request.POST.get('name') 
+        msg={'msg':m}
+        return render(request,'contact-us.html' , msg)
+    else:
+        return render(request,'contact-us.html')
+
+#------------------- About us -------------------------
+def about(request):
+    return render(request,'about-us.html')
+
 # Create your views here.
+ 

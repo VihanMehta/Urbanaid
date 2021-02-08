@@ -22,13 +22,13 @@
   <!-- Owl Carousel -->
   <link href="{% static 'plugins/slick-carousel/slick/slick.css' %}" rel="stylesheet">
   <link href="{% static 'plugins/slick-carousel/slick/slick-theme.css' %}" rel="stylesheet">
-  <!-- Fancy Box -->
+  
   <link href="{% static 'plugins\font-awesome\css\font-awesome.css' %}" rel="stylesheet">
   <link href="{% static 'plugins/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
   <!-- CUSTOM CSS -->
   <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
-
+	<script src="https://kit.fontawesome.com/c26cd2166c.js" ></script>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -55,22 +55,39 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav ml-auto mt-10">
-							<li class="nav-item">
-							{%  if request.session.user %}
-								<button class="nav-link login-button"> {{ request.session.user }}</button>
+					<ul class="navbar-nav ml-auto main-nav ">
+
+						<li class="nav-item font-weight-bold">
+								<a class="nav-link" href="index">Home</a>
+						</li>
+						<li class="nav-item font-weight-bold">
+								<a class="nav-link " href="contactUs">Contact Us</a>
+						</li>
+						<li class="nav-item font-weight-bold">
+								<a class="nav-link " href="/aboutUs">About Us</a>
+						</li>
+						
+					</ul>
+					
+					<ul class="navbar-nav ml-auto mt-10">
+					{%  if request.session.user %}
+							<li class="nav-item ">
+								<a data-toggle="tooltip" data-placement="top" title="{{request.session.user}}'s Profile" class="view" href="/profile">
+							<i class="fas fa-user-circle fa-3x"></i></a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link login-button" href="/logout">Logout</a>
+					{% else %}
+							<li class="nav-item ">
+								<a class="nav-link text-white add-button" href="/usr_login"><i class="fa fa-user-circle-o" aria-hidden="true"></i>   Login </a>	
 							</li>
-							{% else %}
+							&nbsp;
+							<li class="nav-item ">
+								<a class="nav-link text-white add-button" href="/register"><i class="fa fa-user-circle-o" aria-hidden="true"></i>  Register </a>	
 							</li>
-							<li class="nav-item">
-								<a class="nav-link login-button" href="/usr_login">Login</a>
-							</li>
-							{% endif %}
-						</ul>
+					{% endif %}
+					</ul>
+					
 					</div>
+					
 				</nav>
 			</div>
 		</div>

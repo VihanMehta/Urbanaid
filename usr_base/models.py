@@ -1,6 +1,15 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
 
+class contactus(models.Model):
+    Name = models.CharField(max_length=25, null=False)
+    email = models.CharField(max_length=50, null=False)
+    Message = models.TextField(null=False)
+
+    def __str__(self):
+        return self.email
+    
+
 class User_mst(models.Model):
     UserName = models.CharField(max_length=15, null=False, unique=True)
     Password = models.CharField(max_length=500, null=False)

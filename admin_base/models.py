@@ -22,6 +22,14 @@ class Category_mst(models.Model):
     def __str__(self):
         return self.CategoryName
 
+rate_choice=(
+       ('1','1'),
+       ('2','2'),
+       ('3','3'),
+       ('4','4'),
+       ('5','5'),
+   )
+
 class Service_mst(models.Model):
     Categoryid = models.ForeignKey('Category_mst', max_length=7, on_delete=models.CASCADE)
     Professionalid = models.ForeignKey('Professional_mst', max_length=5, on_delete=models.CASCADE)
@@ -33,8 +41,8 @@ class Service_mst(models.Model):
     available=models.BooleanField(default=True)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
+    rate=models.CharField(choices=rate_choice ,max_length=5 , blank=True)
 
     def __str__(self):
         return self.ServiceName
 
-# Create your models here.
