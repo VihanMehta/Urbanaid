@@ -183,5 +183,24 @@ def changpass(request):
 #-------------- Email Change--------------------------
 
 def emailchange(request):
-    return render(request,'update_email.html')
+    if request.method=='POST':
+        eror=None
+        sucess=None
+        cemail=request.POST['email']
+        newemail=request.POST['newemail']
+        print(cemail,newemail)
+        current_usr = request.session['user']
+        user=User_mst.objects.get(UserName=current_usr)
+        if cemail==user.Email:
+            if user.Emailcheck()==True:
+                eror='New Email in Exists in our System ! Try diffrent email'
+            else:
+                user.Email=newemail
+                user.save()
+                sucess="successfully updated new Email !"
+        else:
+            eror="Inavlid Current Email !"
+        return render(request,'update_email.html',{'eror':eror,'sucess':sucess})
+    else:
+        return render(request,'update_email.html')
  

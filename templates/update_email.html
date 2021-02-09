@@ -54,23 +54,41 @@
 						<!-- Change Email Address -->
 					<div class="widget change-email mb-0">
 						<h3 class="widget-header user">Edit Email Address</h3>
-						<form action="#">
+						<form method="POST"  action="/change_email">
+                        {% csrf_token %}
+                        {% if eror %}
+							<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                     <center><p><strong>Ops ! </strong>{{eror}}<p></center>
+                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span> </button>
+        					</div>
+							{% endif %}
 							<!-- Current Password -->
 							<div class="form-group">
 								<label for="current-email">Current Email</label>
-								<input type="email" class="form-control" id="current-email">
+								<input type="email" class="form-control border border-warning" name="email" id="current-email" required>
 							</div>
 							<!-- New email -->
 							<div class="form-group">
 								<label for="new-email">New email</label>
-								<input type="email" class="form-control" id="new-email">
+								<input type="email" class="form-control" name="newemail" id="new-email" required>
+							</div>
+                            <!-- Confirm New Email -->
+							<div class="form-group">
+								<label for="confirm-password">Confirm New Email</label>
+								<input type="password" class="form-control" id="confirm-email" onkeyup="checkpass()" required>
+								<span id='err' class="text-danger"></span>
 							</div>
 							<!-- Submit Button -->
-							<button class="btn btn-transparent">Change email</button>
+							<button type="submit" class="btn btn-transparent">Change email</button>
 						</form>
+                        {% if sucess %}
+                        <div class="alert alert-success" role="alert">
+ 								<p><strong> Hurrey ! </strong>{{sucess}}</p>
+							</div>
+						{% endif %}
 					</div>
 					</div>
-					
 					</div>
 				</div>
 			</div>

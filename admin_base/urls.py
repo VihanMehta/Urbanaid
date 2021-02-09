@@ -7,5 +7,7 @@ app_name="urbanaid"
 urlpatterns = [
     path('service',views.service,name='service_list'),
     path('search',views.search,name='search'),
-    path('service/<slug:slug>/',servicedetailsView.as_view(),name="serviceDetail")
+    path('service/<slug:slug>/',servicedetailsView.as_view(),name="serviceDetail"),
+    path('booking',views.booking),
+    path('checkout',views.checkout),
 ]

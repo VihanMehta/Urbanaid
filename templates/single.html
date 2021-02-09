@@ -1,98 +1,6 @@
 {%extends 'index.html'%}
 {% load static %}
 {%block title%} Service Details {%endblock title%}
-
-
-
-<section>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<nav class="navbar navbar-expand-lg navbar-light navigation">
-					<a class="navbar-brand" href="index.html">
-						<img src="images/logo.png" alt="">
-					</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav ml-auto main-nav ">
-							<li class="nav-item active">
-								<a class="nav-link" href="index.html">Home</a>
-							</li>
-							<li class="nav-item dropdown dropdown-slide">
-								<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="">Dashboard<span><i class="fa fa-angle-down"></i></span>
-								</a>
-
-								<!-- Dropdown list -->
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="dashboard.html">Dashboard</a>
-									<a class="dropdown-item" href="dashboard-my-ads.html">Dashboard My Ads</a>
-									<a class="dropdown-item" href="dashboard-favourite-ads.html">Dashboard Favourite Ads</a>
-									<a class="dropdown-item" href="dashboard-archived-ads.html">Dashboard Archived Ads</a>
-									<a class="dropdown-item" href="dashboard-pending-ads.html">Dashboard Pending Ads</a>
-								</div>
-							</li>
-							<li class="nav-item dropdown dropdown-slide">
-								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Pages <span><i class="fa fa-angle-down"></i></span>
-								</a>
-								<!-- Dropdown list -->
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="about-us.html">About Us</a>
-									<a class="dropdown-item" href="contact-us.html">Contact Us</a>
-									<a class="dropdown-item" href="user-profile.html">User Profile</a>
-								</div>
-							</li>
-							<li class="nav-item dropdown dropdown-slide">
-								<a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Listing <span><i class="fa fa-angle-down"></i></span>
-								</a>
-							</li>
-						</ul>
-						<ul class="navbar-nav ml-auto mt-10">
-							<li class="nav-item">
-								<a class="nav-link login-button" href="login.html">Login</a>
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</div>
-		</div>
-	</div>
-</section>
-<section class="page-search">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<!-- Advance Search -->
-				<div class="advance-search">
-					<form>
-						<div class="form-row">
-							<div class="form-group col-md-4">
-								<input type="text" class="form-control my-2 my-lg-0" id="inputtext4" placeholder="What are you looking for">
-							</div>
-							<div class="form-group col-md-3">
-								<input type="text" class="form-control my-2 my-lg-0" id="inputCategory4" placeholder="Category">
-							</div>
-							<div class="form-group col-md-3">
-								<input type="text" class="form-control my-2 my-lg-0" id="inputLocation4" placeholder="Location">
-							</div>
-							<div class="form-group col-md-2">
-
-								<button type="submit" class="btn btn-primary">Search Now</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!--===================================
-=            Store Section            =
-====================================-->
 {%block content%}
 <section class="section bg-gray">
 	<!-- Container Start -->
@@ -262,7 +170,7 @@
 						<p class="member-time">Member Since Jun 27, 2017</p>
 						<a href="">See all ads</a>
 						<ul class="list-inline mt-20">
-							<li class="list-inline-item"><a href="" class="btn btn-contact d-inline-block  btn-primary px-lg-5 my-1 px-md-3">Book</a></li>
+							<li class="list-inline-item"><a href="/booking" class="btn btn-contact d-inline-block  btn-primary px-lg-5 my-1 px-md-3">Book</a></li>
 						</ul>
 					</div>
 					<!-- Safety tips widget -->

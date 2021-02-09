@@ -37,6 +37,11 @@ class User_mst(models.Model):
             return True
         return  False
     
+    def Emailcheck(newemail):
+        if User_mst.objects.filter(Email = newemail):
+            return True
+        return  False
+
     def UserisExists(self):
         if User_mst.objects.filter(UserName = self.UserName):
             return True

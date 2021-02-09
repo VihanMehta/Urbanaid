@@ -41,3 +41,11 @@ class servicedetailsView(TemplateView):
         stu = {"prof": data}
         context['services_list'] = services_list
         return context
+
+ #--------- Booking ---------
+def booking(request):
+    return render(request,'booking.html')
+
+ #--------- Checkout ---------
+def checkout(request):
+    return render(request,'checkout.html')
