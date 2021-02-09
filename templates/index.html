@@ -72,8 +72,8 @@
 					<ul class="navbar-nav ml-auto mt-10">
 					{%  if request.session.user %}
 							<li class="nav-item ">
-								<a data-toggle="tooltip" data-placement="top" title="{{request.session.user}}'s Profile" class="view" href="/profile">
-							<i class="fas fa-user-circle fa-3x"></i></a>
+								<a class='h6 font-weight-bolder' data-toggle="tooltip" data-placement="top" title="{{request.session.name}}'s Profile" class="view" href="/profile">
+							<i class="fas fa-user-circle "></i> My Account </a> 
 							</li>
 					{% else %}
 							<li class="nav-item ">
@@ -94,9 +94,6 @@
 	</div>
 </section>
 {% endblock navbar %}
-<!--===============================
-=            Hero Area            =
-================================-->
 {% block content %}
 
 <section class="hero-area bg-1 text-center overly">

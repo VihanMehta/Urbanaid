@@ -21,9 +21,8 @@
 							<img src="{% static 'images/user/user-thumb.jpg' %}" alt="" class="rounded-circle">
 						</div>
 						<!-- User Name -->
-						<h5 class="text-center">Samanta Doe</h5>
-						<p>Joined February 06, 2017</p>
-						<a href="/update_profile" class="btn btn-main-sm">Edit Profile</a>
+						<h5 class="text-center">{{request.session.name}}</h5>
+						
 					</div>
 					<!-- Dashboard Links -->
 					
@@ -153,10 +152,13 @@
 	<!-- Container End -->
 	
 	{% else %}
-		 <div class="alert alert-danger " role="alert">
-                   <center> <h2>You have to loging First to acces this page </h2> <br>
-				  <h3> <a href="/usr_login" class="login-button bg-info">Click here </a></h3></center>
+		 <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                     <center> <h2>You have to loging First to access this page </h2> <br>
+									  <h3> <a href="/usr_login" class=" text-info">Click here For Login </a></h3></center>
+                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span> </button>
         </div>
 				{% endif %}
 </section>
-{%endblock content%}
+
+{% endblock content %}

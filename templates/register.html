@@ -10,13 +10,13 @@ function validate() {
     return true;
 }
 </script>-->
-<section class="login py-5 border-top-1 bg-info">
+<section class="login py-5 border-top-1 ">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8 align-item-center">
                     <div class="border border">
                         <h2 class="bg-dark text-white p-4 justify-content-center"><center>Register Now</center></h2>
-                        <form method='POST' action="/register"class='bg-shadow'>
+                        <form method='POST' action="/register" class='bg-shadow'>
                           {% csrf_token %}
                            {% if error%}
                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">

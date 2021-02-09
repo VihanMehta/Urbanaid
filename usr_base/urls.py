@@ -12,4 +12,6 @@ urlpatterns = [
     path('update_profile',views.update_profile),
     path('contactUs',views.Contact),
     path('aboutUs',views.about),
+    path('change_pass',views.changpass),
+    path('change_email',views.emailchange),
 ]

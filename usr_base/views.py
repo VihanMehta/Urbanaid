@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, HttpResponseRedirect
 from usr_base.models import User_mst , contactus
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
+from django.contrib.sessions.models import Session
 from django.contrib import messages
 from django.views import View
 
@@ -50,7 +50,7 @@ class Register(View):
             #print(UserName, Password, FirstName, LastName, Gender, Email, ContactNo)
             new_user.Password = make_password(new_user.Password)
             new_user.register()
-            return redirect('index')
+            return redirect('usr_login')
         else:
             data = {
                 'error': error_message,
@@ -95,9 +95,10 @@ class Login(View):
         user = User_mst.get_User_mst_by_Email(UserName)
         error_message = None
         if user:
-            flag = check_password(Password, user.Password) #password Dycription 
+            flag = check_password(Password, user.Password)  
             if flag:
-                request.session['user'] = user.FirstName
+                request.session['user'] = user.UserName
+                request.session['name'] = user.FirstName +' '+ user.LastName
                 if Login.return_url:
                     return HttpResponseRedirect(Login.return_url)
                 else:
@@ -146,8 +147,8 @@ def Contact(request):
         )
         data.save()
         m= "we catch you soon "+ request.POST.get('name') 
-        msg={'msg':m}
-        return render(request,'contact-us.html' , msg)
+        
+        return render(request,'contact-us.html' , {'msg':m})
     else:
         return render(request,'contact-us.html')
 
@@ -155,5 +156,32 @@ def Contact(request):
 def about(request):
     return render(request,'about-us.html')
 
-# Create your views here.
+#------------ Change password ------------------------
+def changpass(request):
+    if request.method == 'POST':
+        eror=None
+        sucessmsg=None
+        psw = request.POST.get('currentpass')
+        newpsw = request.POST.get('newpass')
+        current_usr = request.session['user']
+        
+        #print(current_usr)
+        user=User_mst.objects.get(UserName=current_usr)
+        #id=user.id
+        check=check_password(psw,user.Password)
+        #print(check)
+        if check==True:
+            user.Password = make_password(newpsw)
+            user.save()
+            sucessmsg=' Password Change Successfully !'
+        else:
+            eror='Incorrect Current Password !'
+        return render(request,'update_password.html',{'eror':eror,'sucess':sucessmsg})
+    else:
+       return render(request,'update_password.html')
+
+#-------------- Email Change--------------------------
+
+def emailchange(request):
+    return render(request,'update_email.html')
  
