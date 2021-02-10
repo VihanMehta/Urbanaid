@@ -89,10 +89,32 @@
 					</div>		 
 					<ul class="nav header-navbar-rht">
 					{%  if request.session.user %}
+							<li class="nav-item dropdown has-arrow logged-item">
+							<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+								<span class="user-img">
+									<img class="rounded-circle" src="{% static 'images/user/user-thumb.jpg' %}" width="31" alt="{{request.session.name}}">
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<div class="user-header">
+									<div class="avatar avatar-sm">
+										<img src="{% static 'images/user/user-thumb.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+									</div>
+									<div class="user-text">
+										<h6>{{request.session.name}}</h6>
+										<p class="text-muted mb-0">User</p>
+									</div>
+								</div>
+								<a class="dropdown-item" href="/service">Find service</a>
+								<a class="dropdown-item" href="/profile">Profile</a>
+								<a class="dropdown-item" href="/logout">Logout</a>
+							</div>
+						</li>
+						<!--------
 							<li class="nav-item header-login">
 								<a class="btn btn-transparent" data-toggle="tooltip" data-placement="top" title="{{request.session.name}}'s Profile" class="view" href="/profile">
 							<i class="fas fa-user-circle "></i> My Account </a> 
-							</li>
+							</li>-->
 					{% else %}
 						<li class="nav-item">
 							<a class="nav-link header-login" href="/usr_login">login / Signup </a>
@@ -164,14 +186,6 @@
 	<!-- Container End -->
 </section>
 
-<!--===================================
-=            Client Slider            =
-====================================-->
-
-
-<!--===========================================
-=            Popular service section            =
-============================================-->
 
 <section class="popular-deals section bg-gray">
 	<div class="container">
