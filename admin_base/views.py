@@ -22,8 +22,7 @@ def service(request):
 #----- Search service finction ---------------
 def search(request):
     query=request.GET.get('query')
-
-    posts= Service_mst.objects.filter(available = True,ServiceName__icontains=query)
+    posts=Service_mst.objects.filter(available = True,ServiceName__icontains=query)
     return render(request, 'service-search.html', 
                     {'posts': posts,
                     }) 
@@ -41,7 +40,7 @@ class servicedetailsView(TemplateView):
         stu = {"prof": data}
         context['services_list'] = services_list
         return context
-
+   
  #--------- Booking ---------
 def booking(request):
     return render(request,'booking.html')

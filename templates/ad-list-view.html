@@ -1,5 +1,5 @@
 {%extends 'index.html'%}
-
+{% load static %}
 {%block title%} Category {%endblock title%}
 
 {%block content%}
@@ -79,18 +79,21 @@
                 <div class="col-lg-6 align-self-center">
                     <div class="product-ratings float-lg-right pb-3">
 					<ul class="list-inline">
-                        {{service.rate}}<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+
+                        <p class="btn btn-warning">{{service.rate}}<i class="fa fa-star"></i></p>
 					</ul>
                     </div>
+					<a href='/booking' class="btn btn-transparent submit-btn">Book Professional</a>
                 </div>
+				
             </div>
+			
         </div>
     </div>
 </div>
 <div class="ad-listing-list mt-20">
-
 </div>
-{% endfor %}
+	{% endfor %}
 			                	<!-- ad listing list  -->
 
 				<!-- pagination -->

@@ -1,15 +1,7 @@
 {%extends  'index.html'%}
 {%block title%} Register {%endblock title%} 
 {%block content %}
-<!--<script type="text/javascript">
-function validate() {  
-	var terms = document.getElementsByName("term");
-	if (!terms.checked)
-		alert("Please accept the Terms of Service and Privacy Policy");
-	    return false;
-    return true;
-}
-</script>-->
+
 <section class="login py-5 border-top-1 ">
         <div class="container">
             <div class="row justify-content-center">
@@ -18,39 +10,61 @@ function validate() {
                         <h2 class="bg-dark text-white p-4 justify-content-center"><center>Register Now</center></h2>
                         <form method='POST' action="/register" class='bg-shadow'>
                           {% csrf_token %}
+                           {% if sucess%}                            
+                                <div class="alert alert-primary" role="alert">
+                                   <strong>Welcome ! </strong>{{sucess}} . You can <u><a href="/usr_login" class="alert-link">Login</a></u> with your credintial  .
+                                </div>
+                            
+                           {% endif %}
                            {% if error%}
                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>{{error}}</strong> 
+                                    <strong>{{error}}</strong> </br>
                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                      <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                             {% endif %}
+
                             <fieldset class="p-4">
-                               <input type="text" placeholder="Enter Username*" name="uname" id="uname" value="{{values.UserName}}" class="border p-3 w-100 my-2" required autocomplete="off"  >
-                               <ul id="uname" class="text-danger font-weight-bold"></ul>
-                                <input type="password" placeholder="Password*" name='psw' id="pass" value="{{values.Password}}" class="border p-3 w-100 my-2" required autocomplete="off">
-                                <ul id="pass" class="text-danger font-weight-bold"></ul>
-                                <input type="text" placeholder="Enter First name*" name="fname" id="fname" value="{{values.FirstName}}"  class="border p-3 w-100 my-2" required autocomplete="off" >
-                                <ul id="fname" class="text-danger font-weight-bold"></ul>
-                                <input type="text" placeholder="Enter Last name*" name="lname" id="lname" value="{{values.LastName}}"  class="border p-3 w-100 my-2" required autocomplete="off">
-                                <ul id="lname" class="text-danger font-weight-bold"></ul>
+                               <input type="text" placeholder="Enter Username*" name="uname" id="uname" value="{{values.UserName}}" class="border p-3 w-100 my-2"  onkeyup="checkusername()" maxlength="50" required autocomplete="off"  >
+                               <span id='uname_err1' class="text-danger"></span><br>
+                               <span id='uname_err2' class="text-danger"></span><br>
+                               <span id='uname_err3' class="text-danger"></span>
+
+                                <input type="password" placeholder="Password*" name='psw' id="password" value="{{values.Password}}" onkeyup="checkpass()" class="border p-3 w-100 my-2" maxlength="50" required autocomplete="off">
+                                 <span id='pass_err1' class="text-danger"></span>
+
+                                <input type="text" placeholder="Confirm Password*"  id="confirm-password" onkeyup="checkpass()" class="border p-3 w-100 my-2" required autocomplete="off" required>
+                                <span id='pass_err' class="text-danger"></span>
+
+                                <input type="text" placeholder="Enter First name*" name="fname" id="Fname" value="{{values.FirstName}}" onkeyup="checknames()" class="border p-3 w-100 my-2" maxlength="20" required autocomplete="off" >
+                                <span id='fname_err' class="text-danger"></span><br>
+                                <span id='fname_err1' class="text-danger"></span>
+
+                                <input type="text" placeholder="Enter Last name*" name="lname" id="Lname" value="{{values.LastName}}" onkeyup="checknames()" class="border p-3 w-100 my-2" maxlength="20" required autocomplete="off">
+                                <span id='lname_err' class="text-danger"></span><br>
+                                <span id='lname_err1' class="text-danger"></span>
+
                                 <hr>
                                 &nbsp;&nbsp;&nbsp;&nbsp;<label for="gender" ><b>Gender</b></label> &nbsp;
                                     <input type="radio" value="M" name='gender' id="genderM"> Male &nbsp; | &nbsp;
                                     <input  type="radio" value="F" name='gender' id="genderF"> Female <br>
                                     <hr>
-                                <span id="gender" class="text-danger font-weight-bold"></span>
-                                <input type="email" placeholder="Email*" name="email" id="email" value="{{values.Email}}" class="border p-3 w-100 my-2" required autocomplete="off">
-                                <ul id="email" class="text-danger font-weight-bold"></ul>
-                                <input type="text" placeholder="Enter Contact Number*" name="Contact" id="contact" value="{{values.ContactNo}}" class="border p-3 w-100 my-2"  required autocomplete="off" >
-                                <ul id="contact" class="text-danger font-weight-bold"></ul>
+                                <input type="email" placeholder="Email*" name="email" id="email" value="{{values.Email}}" class="border p-3 w-100 my-2"  onkeyup="checkmail()" maxlength="55" required autocomplete="off">
+                                <span id='email_err' class="text-danger"></span>
+
+                                <input type="text" placeholder="Enter Contact Number*" name="Contact" id="contact" value="{{values.ContactNo}}" maxlength="10" class="border p-3 w-100 my-2"  onkeyup="checkphone()"  required autocomplete="off" >
+                                <span id='phone_err' class="text-danger"></span><br>
+                                <span id='phone_err2' class="text-danger"></span>
+
                                 <div class="loggedin-forgot d-inline-flex my-3">
-                                <!-- for getting msg from view file -->
-                                        <input type="checkbox" id="term" class="mt-1">
-                                        <label for="registering" class="px-2">By registering, you accept our <a class="text-primary font-weight-bold" href="terms-condition.html">Terms & Conditions</a></label>
+                            
+                                        <input type="checkbox" onclick="final()" id="term" class="mt-1">
+                                        <label class="px-2">By registering, you accept our <a class="text-primary font-weight-bold" href="terms-condition.html">Terms & Conditions</a></label><br>
+                                        <br><span id='term_err' class="text-info font-weight-bold"></span>
                                 </div>
-                                <button type="submit" class="d-block py-3 px-4 bg-primary text-white border-0 rounded font-weight-bold" onclick="return validate()">Register Now</button>
+                                <button type="submit" id="sbtn" class="btn btn-transparent" >Register Now</button>
+                                
                             </fieldset>
                         </form>
                     </div>
@@ -58,6 +72,138 @@ function validate() {
             </div>
         </div>
     </section>
-{%endblock content %}
+
+    <script>
+    function final(){
+    var checkBox = document.getElementById("term");
+    var text = document.getElementById("text");
+    if (checkBox.checked == true){
+        document.getElementById("term_err").innerHTML = "Terms accepted";
+        $("#sbtn").removeAttr("disabled")
+    } else {
+        document.getElementById("term_err").innerHTML = "";
+        $("#sbtn").attr("disabled","disabled")
+    }
+    }
+
+    function checknames(){
+        let f=$("#Fname").val();
+        let l=$("#Lname").val();
+        var regex = new RegExp("^[a-zA-Z]+$");
+        if (regex.test(f)) {
+            document.getElementById("fname_err1").innerHTML = "";
+            $("#sbtn").removeAttr("disabled")
+        }else{
+            document.getElementById("fname_err1").innerHTML = "-Enter Strings only";
+            $("#sbtn").attr("disabled","disabled")
+        }
+        if (regex.test(l)) {
+            document.getElementById("lname_err1").innerHTML = "";
+            $("#sbtn").removeAttr("disabled")
+        }else{
+            document.getElementById("lname_err1").innerHTML = "-Enter Strings only";
+            $("#sbtn").attr("disabled","disabled")
+        }
+
+         if((f.length) < 2 ){
+            document.getElementById("fname_err").innerHTML = "-Enter First Name more than 2 words.";
+            $("#sbtn").attr("disabled","disabled")
+        }else{
+            document.getElementById("fname_err").innerHTML = "";
+            $("#sbtn").removeAttr("disabled")
+        }
+        if((l.length)<2){
+            document.getElementById("lname_err").innerHTML = "-Enter Last Name more than 2 words & string only";
+            $("#sbtn").attr("disabled","disabled")
+        }else{
+            document.getElementById("lname_err").innerHTML = "";
+            $("#sbtn").removeAttr("disabled")
+        }
+    }
+
+    function checkpass(){
+        let p = $("#password").val();
+	    let cp = $("#confirm-password").val();
+        if((p.length) < 6){
+            document.getElementById("pass_err1").innerHTML = "-Password must be 6 char Long";
+            $("#sbtn").attr("disabled","disabled")
+        }else{
+            document.getElementById("pass_err1").innerHTML = "";
+            $("#sbtn").removeAttr("disabled")
+        }
+
+		if(p==cp){
+			$("#sbtn").removeAttr("disabled")
+			document.getElementById("pass_err").innerHTML = '';
+		}
+		else{
+			document.getElementById("pass_err").innerHTML = "Password Mathing error !";
+			$("#sbtn").attr("disabled","disabled")
+		}
+    }
+
+        function checkmail(){
+            let e=$("#email").val();
+            var Et = $.trim( $("#email").text() );
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            if(pattern.test(e)){ 
+                document.getElementById("email_err").innerHTML = "";
+                $("#sbtn").removeAttr("disabled")
+                 
+            }else {
+                document.getElementById("email_err").innerHTML = "-Enter valid Email";
+                $("#sbtn").attr("disabled","disabled")
+            }
+        }
+
+        function checkusername(){
+            let u= $("#uname").val();
+            let ut = $.trim(u);
+
+            if (ut === ''){
+                 document.getElementById("uname_err3").innerHTML = "-invalid Entry";
+                 $("#sbtn").attr("disabled","disabled")
+            }else{
+                 document.getElementById("uname_err3").innerHTML = "";
+                 $("#sbtn").removeAttr("disabled")
+                 }
+
+            if ($.isNumeric(ut)){
+                document.getElementById("uname_err1").innerHTML = "-Don't use only numbers";
+                $("#sbtn").attr("disabled","disabled")
+            }else{
+                 document.getElementById("uname_err1").innerHTML = "";
+                 $("#sbtn").removeAttr("disabled")
+                 }
+
+            if((u.length) <7 ){
+                document.getElementById("uname_err2").innerHTML = '-Username should be more than 6 words';
+                $("#sbtn").attr("disabled","disabled")
+            }else{
+                document.getElementById("uname_err2").innerHTML = "";
+                $("#sbtn").removeAttr("disabled")
+            }
+        }
+
+        function checkphone(){
+            let p= $("#contact").val();
+            if (!$.isNumeric(p)){
+                document.getElementById("phone_err").innerHTML = "-Number Only";
+                $("#sbtn").attr("disabled","disabled")
+            }else{
+                document.getElementById("phone_err").innerHTML = "";
+                $("#sbtn").removeAttr("disabled")
+            }
+             if((p.length) !=10 ){
+                document.getElementById("phone_err2").innerHTML = "-Phone number shoud be 10 numbers only";
+                $("#sbtn").attr("disabled","disabled")
+             }
+             else{
+                document.getElementById("phone_err2").innerHTML = "";
+                $("#sbtn").removeAttr("disabled")
+            }
+        }
+    </script>
+{% endblock content %}
  
 

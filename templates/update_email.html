@@ -71,16 +71,16 @@
 							<!-- New email -->
 							<div class="form-group">
 								<label for="new-email">New email</label>
-								<input type="email" class="form-control" name="newemail" id="new-email" required>
+								<input type="email" class="form-control" name="newemail" id="new-email" onkeyup="checkemail()" required>
 							</div>
                             <!-- Confirm New Email -->
 							<div class="form-group">
-								<label for="confirm-password">Confirm New Email</label>
-								<input type="password" class="form-control" id="confirm-email" onkeyup="checkpass()" required>
+								<label for="confirm-email">Confirm New Email</label>
+								<input type="email" class="form-control" id="confirm-email" onkeyup="checkemail()" required>
 								<span id='err' class="text-danger"></span>
 							</div>
 							<!-- Submit Button -->
-							<button type="submit" class="btn btn-transparent">Change email</button>
+							<button type="submit" id="sbtn" class="btn btn-transparent">Change email</button>
 						</form>
                         {% if sucess %}
                         <div class="alert alert-success" role="alert">
@@ -103,4 +103,19 @@
                                      <span aria-hidden="true">&times;</span> </button>
         </div>
 				{% endif %}
+<script>
+	function checkemail(){
+		let e = $("#new-email").val();
+		let ce = $("#confirm-email").val();
+		if(e==ce){
+			$("#sbtn").removeAttr("disabled")
+			document.getElementById("err").innerHTML = '';
+		}
+		else{
+			$
+			document.getElementById("err").innerHTML = "Email Mathing error !";
+			$("#sbtn").attr("disabled","disabled")
+		}
+	}
+</script>
 {%endblock content%}

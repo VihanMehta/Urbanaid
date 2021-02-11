@@ -50,7 +50,8 @@ class Register(View):
             #print(UserName, Password, FirstName, LastName, Gender, Email, ContactNo)
             new_user.Password = make_password(new_user.Password)
             new_user.register()
-            return redirect('usr_login')
+            msg=" You are sucessfully Registered !"
+            return render(request, 'register.html', {'sucess':msg})
         else:
             data = {
                 'error': error_message,
@@ -59,16 +60,16 @@ class Register(View):
             return render(request, 'register.html', data)
 
     def validateCustomer(self, new_user):
-        error_message = None;
+        error_message = None
         if len(new_user.UserName) < 4:
             error_message = 'UserName must be 4 char long or more'
         elif new_user.UserisExists():
-            error_message = 'UserName is Already Registered..'
-        elif len(new_user.FirstName) < 4:
-            error_message = 'First Name must be 4 char long or more'
-        elif len(new_user.ContactNo) < 6 :
-            error_message = 'Phone Number must be 10 char'
-        elif len(new_user.Password) < 6:
+            error_message = 'sorry ! UserName is Already in system ! Try another..'
+        elif len(new_user.FirstName) < 2:
+            error_message = 'First Name must be 2 char long or more'
+        elif (len(new_user.ContactNo)!=10 ):
+            error_message = 'Phone Number must be 10 character'
+        elif len(new_user.Password) < 6 :
             error_message = 'Password must be 6 char long'
         elif len(new_user.Email) < 5:
             error_message = 'Email must be 5 char long'
@@ -188,16 +189,19 @@ def emailchange(request):
         sucess=None
         cemail=request.POST['email']
         newemail=request.POST['newemail']
-        print(cemail,newemail)
+       # print(cemail,newemail)
         current_usr = request.session['user']
         user=User_mst.objects.get(UserName=current_usr)
-        if cemail==user.Email:
-            if user.Emailcheck()==True:
-                eror='New Email in Exists in our System ! Try diffrent email'
-            else:
+        if cemail==user.Email: 
+            try:
+                match=User_mst.objects.get(Email=newemail)
+                eror='New Email is Exists in our System ! Try diffrent email'
+                return render(request,'update_email.html',{'eror':eror})          
+            except User_mst.DoesNotExist:
                 user.Email=newemail
                 user.save()
                 sucess="successfully updated new Email !"
+                return render(request,'update_email.html',{'sucess':sucess})
         else:
             eror="Inavlid Current Email !"
         return render(request,'update_email.html',{'eror':eror,'sucess':sucess})

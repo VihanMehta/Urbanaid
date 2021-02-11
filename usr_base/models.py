@@ -11,12 +11,12 @@ class contactus(models.Model):
     
 
 class User_mst(models.Model):
-    UserName = models.CharField(max_length=15, null=False, unique=True)
+    UserName = models.CharField(max_length=55, null=False, unique=True)
     Password = models.CharField(max_length=500, null=False)
-    FirstName = models.CharField(max_length=10, null=False)
-    LastName = models.CharField(max_length=10, null=False)
+    FirstName = models.CharField(max_length=25, null=False)
+    LastName = models.CharField(max_length=25, null=False)
     Gender = models.CharField(max_length=1, null=False)
-    Email = models.CharField(max_length=35, null=False, unique=True)
+    Email = models.CharField(max_length=60, null=False, unique=True)
     ContactNo = models.CharField(max_length=10, null=False, unique=True)
 
     def register(self):
@@ -36,11 +36,11 @@ class User_mst(models.Model):
         if User_mst.objects.filter(Email = self.Email):
             return True
         return  False
-    
-    def Emailcheck(newemail):
-        if User_mst.objects.filter(Email = newemail):
+
+    def CheckMail(self):
+        if User_mst.objects.filter(Email = self.Email):
             return True
-        return  False
+        return  False    
 
     def UserisExists(self):
         if User_mst.objects.filter(UserName = self.UserName):
