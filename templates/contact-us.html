@@ -31,17 +31,20 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-lg-6 py-2">
-                                        <input type="text" placeholder="Name *" name='name'  autocomplete='off' class="form-control" required>
+                                        <input type="text" placeholder="Name *" name='name' id="name" maxlength="30" autocomplete='off' onkeyup="checkname()" class="form-control border border-info" required>
+                                        <span id='name_err' class="text-danger"></span><br>
+                                        <span id='name_err1' class="text-danger"></span>
                                     </div>
                                     <div class="col-lg-6 pt-2">
-                                        <input type="email" placeholder="Email *" name='email' autocomplete='off' class="form-control" required>
+                                        <input type="email" placeholder="Email *" id="Email" maxlength="40" name='email' autocomplete='off' onkeyup="checkemail()" class="form-control border border-info" required>
+                                        <span id='email_err' class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
                            
-                            <textarea  id=""  placeholder="Message *" name='msg' class="border w-100 p-3 mt-3 mt-lg-4" required></textarea>
+                            <textarea  id=""  placeholder="Message *" maxlength="125" name='msg' class="form-control border border-warning" required></textarea>
                             <div class="btn-grounp">
-                                <button type="submit"  class="btn btn-primary mt-2 float-right">SUBMIT</button>
+                                <button type="submit" id="btn" class="btn btn-primary mt-2 float-right">SUBMIT</button>
                             </div>
 
                             
@@ -55,5 +58,41 @@
         </div>
     </div>
 </section>
+<script>
+ function checkemail(){
+            let e=$("#Email").val();
+            var Et = $.trim( $("#Email").text() );
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            if(pattern.test(e)){ 
+                document.getElementById("email_err").innerHTML = "";
+                $("#btn").removeAttr("disabled")
+                 
+            }else {
+                document.getElementById("email_err").innerHTML = "-Enter valid Email";
+                $("#btn").attr("disabled","disabled")
+            }
+        }
+
+function checkname(){
+        let n=$("#name").val();
+        var regex = new RegExp("^[a-zA-Z]+$");
+        if (regex.test(n)) {
+            document.getElementById("name_err1").innerHTML = "";
+            $("#btn").removeAttr("disabled")
+        }else{
+            document.getElementById("name_err1").innerHTML = "-Enter Strings only";
+            $("#btn").attr("disabled","disabled")
+        }
+
+        if((n.length) < 2){
+            document.getElementById("name_err").innerHTML = "-Name more than 2 words.";
+            $("#btn").attr("disabled","disabled")
+        }else{
+            document.getElementById("name_err").innerHTML = "";
+            $("#btn").removeAttr("disabled")
+        }
+    }
+
+</script>
 
 {% endblock content %}

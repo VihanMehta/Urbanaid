@@ -1,0 +1,177 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- SITE TITTLE -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UrbanAid</title>
+  
+  <!-- FAVICON -->
+  <link href="{% static 'images/favicon.png' %}" rel="shortcut icon">
+  <!-- PLUGINS CSS STYLE -->
+  <!-- <link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"> -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap-slider.css' %}">
+  <!-- Font Awesome -->
+  <link href="{% static 'plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet' %}">
+  <!-- Owl Carousel -->
+  <link href="{% static 'plugins/slick-carousel/slick/slick.css' %}" rel="stylesheet">
+  <link href="{% static 'plugins/slick-carousel/slick/slick-theme.css' %}" rel="stylesheet">
+  
+  <link href="{% static 'plugins\font-awesome\css\font-awesome.css' %}" rel="stylesheet">
+  <link href="{% static 'plugins/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
+  <!-- CUSTOM CSS -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+<link href="{% static 'css/style1.css' %}" rel="stylesheet">
+
+	<script src="https://kit.fontawesome.com/c26cd2166c.js" ></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+</head>
+
+<body class="body-wrapper">
+
+{% block navbar %}
+<header class="header">
+				<nav class="navbar navbar-expand-lg header-nav">
+					<div class="navbar-header">
+						<a id="mobile_btn" href="javascript:void(0);">
+							<span class="bar-icon">
+								<span></span>
+								<span></span>
+								<span></span>
+							</span>
+						</a>
+						<a href="http://127.0.0.1:8000/index" class="navbar-brand logo">
+							<img src="{% static 'images/logo.png' %}" class="img-fluid" alt="Logo">
+						</a>
+					</div>
+					<div class="main-menu-wrapper">
+						<div class="menu-header">
+							<a href="index-2.html" class="menu-logo">
+								<img src="{% static 'images/logo.png' %}" class="img-fluid" alt="Logo">
+							</a>
+							<a id="menu_close" class="menu-close" href="javascript:void(0);">
+								<i class="fas fa-times"></i>
+							</a>
+						</div>
+						<ul class="main-nav font-weight-bold">
+							<li>
+								<a href="index"><strong>Home</strong></a>
+							</li>
+							<li>
+								<a href="contactUs"><strong>Contact Us</strong></a>
+							</li>
+							<li>
+								<a href="/aboutUs"><strong>About Us</strong></a>
+							</li>
+							<li>
+								<a href="/prof/login"><strong>Professional Login</strong></a>
+							</li>
+							{%  if request.session.professional %}
+								<li class="login-link">
+								<a class='h6 font-weight-bolder' data-toggle="tooltip" data-placement="top" title="{{request.session.name}}'s Profile" class="view" href="/profile">
+							<i class="fas fa-user-circle "></i> My Account </a> 
+							</li>
+							{% else %}
+							<li class="login-link">
+								<a href="/usr_login">Login / Signup</a>
+							</li>
+							{% endif %}
+						</ul>		 
+					</div>		 
+					<ul class="nav header-navbar-rht">
+					{%  if request.session.professional %}
+							<li class="nav-item dropdown has-arrow logged-item">
+							<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+								<span class="user-img">
+									<img class="rounded-circle" src="{% static 'images/user/user-thumb.jpg' %}" width="31" alt="{{request.session.name}}">
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<div class="user-header">
+									<div class="avatar avatar-sm">
+										<img src="{% static 'images/user/user-thumb.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+									</div>
+									<div class="user-text">
+										<h6>{{request.session.profname}}</h6>
+										<p class="text-muted mb-0">Professional</p>
+									</div>
+								</div>
+								<a class="dropdown-item" href="/service">Find service</a>
+								<a class="dropdown-item" href="/profile">Profile</a>
+								<a class="dropdown-item" href="/prof/logout">Logout</a>
+							</div>
+						</li>
+						<!--------
+							<li class="nav-item header-login">
+								<a class="btn btn-transparent" data-toggle="tooltip" data-placement="top" title="{{request.session.name}}'s Profile" class="view" href="/profile">
+							<i class="fas fa-user-circle "></i> My Account </a> 
+							</li>-->
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link header-login" href="/usr_login">login / Signup </a>
+						</li>
+					{% endif %}
+					</ul>
+				</nav>
+			</header>
+			<!-- /Header -->
+{% endblock navbar %}
+{% block content %}
+
+
+
+
+{% endblock content %}
+<!-- Footer Bottom -->
+<footer class="footer-bottom">
+  <!-- Container Start -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-12">
+        <!-- Copyright -->
+        <div class="copyright">
+          <p>Copyright © <script>
+              var CurrentYear = new Date().getFullYear()
+              document.write(CurrentYear)
+            </script>. All Rights Reserved</a></p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-12">
+        <!-- Social Icons -->
+        <ul class="social-media-icons text-right">
+          <li><a class="fa fa-facebook" href="#" target="_blank"></a></li>
+          <li><a class="fa fa-twitter" href=# target="_blank"></a></li>
+          <li><a class="fa fa-pinterest-p" href="#" target="_blank"></a></li>
+          <li><a class="fa fa-vimeo" href=""></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Container End -->
+  <!-- To Top -->
+  <div class="top-to">
+    <a id="top" class="" href="#"><i class="fa fa-angle-up"></i></a>
+  </div>
+</footer>
+
+<!-- JAVASCRIPTS -->
+<script src="{% static 'plugins/jQuery/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/popper.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap-slider.js' %}"></script>
+
+<script src="{% static 'plugins/slick-carousel/slick/slick.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-nice-select/js/jquery.nice-select.min.js' %}"></script>
+
+<script src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'js/script1.js' %}"></script>
+</body>
+
+</html>

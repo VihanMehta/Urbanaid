@@ -129,10 +129,18 @@ def category(request):
 #------------------- User Profile -------------------------
 
 def profile(request):
-    return render(request,'profile.html')
+    try:
+        if request.session['user']:
+            return render(request,"profile.html")
+    except:
+        return redirect("login")
 
 def update_profile(request):
-    return render(request,'update-profile.html')
+    try:
+        if request.session['user']:
+            return render(request,"update-profile.html")
+    except:
+        return redirect("login")
 
 #------------------- Contact us -------------------------
 
@@ -159,52 +167,57 @@ def about(request):
 
 #------------ Change password ------------------------
 def changpass(request):
-    if request.method == 'POST':
-        eror=None
-        sucessmsg=None
-        psw = request.POST.get('currentpass')
-        newpsw = request.POST.get('newpass')
-        current_usr = request.session['user']
-        
-        #print(current_usr)
-        user=User_mst.objects.get(UserName=current_usr)
-        #id=user.id
-        check=check_password(psw,user.Password)
-        #print(check)
-        if check==True:
-            user.Password = make_password(newpsw)
-            user.save()
-            sucessmsg=' Password Change Successfully !'
+    try:
+        if request.session['user']:
+            if request.method == 'POST':
+                eror=None
+                sucessmsg=None
+                psw = request.POST.get('currentpass')
+                newpsw = request.POST.get('newpass')
+                current_usr = request.session['user']
+                user=User_mst.objects.get(UserName=current_usr)
+                check=check_password(psw,user.Password)
+                if check==True:
+                    user.Password = make_password(newpsw)
+                    user.save()
+                    sucessmsg=' Password Change Successfully !'
+                else:
+                    eror='Incorrect Current Password !'
+                    return render(request,'update_password.html',{'eror':eror,'sucess':sucessmsg})
         else:
-            eror='Incorrect Current Password !'
-        return render(request,'update_password.html',{'eror':eror,'sucess':sucessmsg})
-    else:
-       return render(request,'update_password.html')
+            return render(request,'update_password.html')
+    except:
+        return redirect("login")
+
+   
 
 #-------------- Email Change--------------------------
 
 def emailchange(request):
-    if request.method=='POST':
-        eror=None
-        sucess=None
-        cemail=request.POST['email']
-        newemail=request.POST['newemail']
-       # print(cemail,newemail)
-        current_usr = request.session['user']
-        user=User_mst.objects.get(UserName=current_usr)
-        if cemail==user.Email: 
-            try:
-                match=User_mst.objects.get(Email=newemail)
-                eror='New Email is Exists in our System ! Try diffrent email'
-                return render(request,'update_email.html',{'eror':eror})          
-            except User_mst.DoesNotExist:
-                user.Email=newemail
-                user.save()
-                sucess="successfully updated new Email !"
-                return render(request,'update_email.html',{'sucess':sucess})
-        else:
-            eror="Inavlid Current Email !"
-        return render(request,'update_email.html',{'eror':eror,'sucess':sucess})
-    else:
-        return render(request,'update_email.html')
- 
+    try:
+        if request.session['user']:
+            if request.method=='POST':
+                eror=None
+                sucess=None
+                cemail=request.POST['email']
+                newemail=request.POST['newemail']
+                # print(cemail,newemail)
+                current_usr = request.session['user']
+                user=User_mst.objects.get(UserName=current_usr)
+                if cemail==user.Email: 
+                    try:
+                        match=User_mst.objects.get(Email=newemail)
+                        eror='New Email is Exists in our System ! Try diffrent email'
+                        return render(request,'update_email.html',{'eror':eror})          
+                    except User_mst.DoesNotExist:
+                        user.Email=newemail
+                        user.save()
+                        sucess="successfully updated new Email !"
+                        return render(request,'update_email.html',{'sucess':sucess})
+                else:
+                    eror="Inavlid Current Email !"
+                return render(request,'update_email.html',{'eror':eror,'sucess':sucess})
+            else:
+                return render(request,'update_email.html')
+    except:
+        return redirect("login")

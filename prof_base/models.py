@@ -10,6 +10,12 @@ class Professional_mst(models.Model):
     ContactNo = models.CharField(max_length=10, null=False, unique=True)
     Qualification = models.CharField(max_length=50, null=False)
     
+    @staticmethod
+    def get_prof_mst_by_username(UserName):
+        try:
+            return Professional_mst.objects.get(UserName=UserName)
+        except:
+            return False
 
 class Professional_Contact(models.Model):
      FirstName = models.CharField(max_length=10, null=False)

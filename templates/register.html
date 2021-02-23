@@ -29,7 +29,8 @@
                                <input type="text" placeholder="Enter Username*" name="uname" id="uname" value="{{values.UserName}}" class="border p-3 w-100 my-2"  onkeyup="checkusername()" maxlength="50" required autocomplete="off"  >
                                <span id='uname_err1' class="text-danger"></span><br>
                                <span id='uname_err2' class="text-danger"></span><br>
-                               <span id='uname_err3' class="text-danger"></span>
+                               <span id='uname_err3' class="text-danger"></span><br>
+                               <span id='uname_err4' class="text-danger"></span>
 
                                 <input type="password" placeholder="Password*" name='psw' id="password" value="{{values.Password}}" onkeyup="checkpass()" class="border p-3 w-100 my-2" maxlength="50" required autocomplete="off">
                                  <span id='pass_err1' class="text-danger"></span>
@@ -60,7 +61,7 @@
                                 <div class="loggedin-forgot d-inline-flex my-3">
                             
                                         <input type="checkbox" onclick="final()" id="term" class="mt-1">
-                                        <label class="px-2">By registering, you accept our <a class="text-primary font-weight-bold" href="terms-condition.html">Terms & Conditions</a></label><br>
+                                        <label class="px-2">By registering, you accept our <a class="text-primary font-weight-bold" href="#">Terms & Conditions</a></label><br>
                                         <br><span id='term_err' class="text-info font-weight-bold"></span>
                                 </div>
                                 <button type="submit" id="sbtn" class="btn btn-transparent" >Register Now</button>
@@ -69,7 +70,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div>  
         </div>
     </section>
 
@@ -112,8 +113,8 @@
             document.getElementById("fname_err").innerHTML = "";
             $("#sbtn").removeAttr("disabled")
         }
-        if((l.length)<2){
-            document.getElementById("lname_err").innerHTML = "-Enter Last Name more than 2 words & string only";
+        if((l.length) < 2){
+            document.getElementById("lname_err").innerHTML = "-Enter Last Name more than 2 words.";
             $("#sbtn").attr("disabled","disabled")
         }else{
             document.getElementById("lname_err").innerHTML = "";
@@ -159,7 +160,14 @@
         function checkusername(){
             let u= $("#uname").val();
             let ut = $.trim(u);
-
+            var regex = new RegExp("^[0-9a-zA-Z]+$");
+            if (regex.test(ut)){
+                document.getElementById("uname_err4").innerHTML = "";
+                $("#sbtn").removeAttr("disabled")
+             }else{
+                document.getElementById("uname_err4").innerHTML = "-Enter Strings and Numbers only";
+                $("#sbtn").attr("disabled","disabled")
+             }
             if (ut === ''){
                  document.getElementById("uname_err3").innerHTML = "-invalid Entry";
                  $("#sbtn").attr("disabled","disabled")
@@ -184,7 +192,6 @@
                 $("#sbtn").removeAttr("disabled")
             }
         }
-
         function checkphone(){
             let p= $("#contact").val();
             if (!$.isNumeric(p)){
