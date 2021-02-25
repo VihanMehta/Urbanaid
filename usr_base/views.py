@@ -100,6 +100,11 @@ class Login(View):
             if flag:
                 request.session['user'] = user.UserName
                 request.session['name'] = user.FirstName +' '+ user.LastName
+                request.session['fname'] = user.FirstName 
+                request.session['lname'] = user.LastName
+                request.session['email'] = user.Email
+                request.session['address'] = user.address
+                request.session['pcode'] = user.Postcode
                 if Login.return_url:
                     return HttpResponseRedirect(Login.return_url)
                 else:
@@ -130,15 +135,32 @@ def category(request):
 
 def profile(request):
     try:
-        if request.session['user']:
+        if request.session['user']: 
             return render(request,"profile.html")
     except:
         return redirect("login")
 
+#------ update_profile---------------------
+
 def update_profile(request):
+    msg=None
     try:
         if request.session['user']:
-            return render(request,"update-profile.html")
+            if request.method=='POST':
+                usr=request.session['user']  
+                user=User_mst.objects.get(UserName=usr)
+                if request.POST.get('address'):
+                    address = request.POST.get('address') 
+                    user.address=address
+                if request.POST.get('pcode'):
+                    pcode = request.POST.get('pcode')  
+                    user.Postcode=pcode
+
+                user.save()
+                msg=" Data added sucessfully! "
+                return render(request,"update-profile.html",{'msg':msg})
+            else:
+                return render(request,"update-profile.html",{'msg':msg})
     except:
         return redirect("login")
 
@@ -155,7 +177,7 @@ def Contact(request):
             Message= msg,
         )
         data.save()
-        m= "we catch you soon "+ request.POST.get('name') 
+        m= request.POST.get('name') +" ! we catch you soon : ) "
         
         return render(request,'contact-us.html' , {'msg':m})
     else:
@@ -167,11 +189,12 @@ def about(request):
 
 #------------ Change password ------------------------
 def changpass(request):
+    eror=None
+    sucessmsg=None
     try:
         if request.session['user']:
             if request.method == 'POST':
-                eror=None
-                sucessmsg=None
+                
                 psw = request.POST.get('currentpass')
                 newpsw = request.POST.get('newpass')
                 current_usr = request.session['user']
@@ -188,7 +211,7 @@ def changpass(request):
             return render(request,'update_password.html')
     except:
         return redirect("login")
-
+    return render(request,'update_password.html',{'error':eror,'sucess':sucessmsg})
    
 
 #-------------- Email Change--------------------------
@@ -221,3 +244,4 @@ def emailchange(request):
                 return render(request,'update_email.html')
     except:
         return redirect("login")
+

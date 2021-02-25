@@ -18,6 +18,8 @@ class User_mst(models.Model):
     Gender = models.CharField(max_length=1, null=False)
     Email = models.CharField(max_length=60, null=False, unique=True)
     ContactNo = models.CharField(max_length=10, null=False, unique=True)
+    address =models.CharField(max_length=500, null=True,blank=True)
+    Postcode= models.CharField(max_length=10, null=True,blank=True)
 
     def register(self):
         self.save()

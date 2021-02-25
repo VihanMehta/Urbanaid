@@ -3,7 +3,7 @@
 {%block title%} Login {%endblock title%}
 {% load static %}
 {%block content%}
-
+<section>
 			<!-- Page Content -->
 			<div class="content">
 				<div class="container-fluid">
@@ -38,7 +38,7 @@
 											</li>
 											
 											<li>
-												<a href="reviews.html">
+												<a href="/prof/reviews">
 													<i class="fas fa-star"></i>
 													<span>Reviews</span>
 												</a>
@@ -52,7 +52,7 @@
 											</li>
 											
 											<li>
-												<a href="doctor-change-password.html">
+												<a href="/prof/changepass">
 													<i class="fas fa-lock"></i>
 													<span>Change Password</span>
 												</a>
@@ -71,7 +71,8 @@
 							
 						</div>
 						<div class="col-md-7 col-lg-8 col-xl-9">
-						
+							<form method='POST' >
+								{% csrf_token %}
 							<!-- Basic Information -->
 							<div class="card">
 								<div class="card-body">
@@ -79,147 +80,165 @@
 									<div class="row form-row">
 										<div class="col-md-12">
 											<div class="form-group">
-												<div class="change-avatar">
-													<div class="profile-img">
-														<img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-													</div>
-													<div class="upload-img">
-														<div class="change-photo-btn">
-															<span><i class="fa fa-upload"></i> Upload Photo</span>
-															<input type="file" class="upload">
-														</div>
-														<small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
-													</div>
-												</div>
+												
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Username <span class="text-danger">*</span></label>
-												<input type="text" class="form-control" readonly>
+												<input type="text" value="{{request.session.professional}}" class="form-control" readonly>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Email <span class="text-danger">*</span></label>
-												<input type="email" class="form-control" readonly>
+												<input type="email" value="{{request.session.profemail}}" class="form-control" readonly>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>First Name <span class="text-danger">*</span></label>
-												<input type="text" class="form-control">
+												<input type="text" value="{{request.session.proffname}}" class="form-control" readonly>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Last Name <span class="text-danger">*</span></label>
-												<input type="text" class="form-control">
+												<input type="text" value="{{request.session.proflname}}"  class="form-control" readonly>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Phone Number</label>
-												<input type="text" class="form-control">
+												<input type="text" value="{{request.session.profphone}}" class="form-control" readonly>
 											</div>
 										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>Gender</label>
-												<select class="form-control select">
-													<option>Select</option>
-													<option>Male</option>
-													<option>Female</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group mb-0">
-												<label>Date of Birth</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
+										
 									</div>
 								</div>
 							</div>
 							<!-- /Basic Information -->
 							
-							<!-- About Me -->
+							<!-- About Me 
 							<div class="card">
 								<div class="card-body">
 									<h4 class="card-title">About Me</h4>
 									<div class="form-group mb-0">
 										<label>Biography</label>
-										<textarea class="form-control" rows="5"></textarea>
+										<textarea class="form-control" rows="5" required></textarea>
 									</div>
 								</div>
+								<div class="submit-section submit-btn-bottom">
+								<center><button type="submit" id="sbtn" class="btn btn-transparent submit-btn">Save Changes</button></center>
 							</div>
-							<!-- /About Me -->
+							</div>
+							 /About Me -->
 							<!-- Contact Details -->
 							<div class="card contact-card">
 								<div class="card-body">
 									<h4 class="card-title">Contact Details</h4>
 									<div class="row form-row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>Address Line 1</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label class="control-label">Address Line 2</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label class="control-label">City</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
+										
+									
 
-										<div class="col-md-6">
+										<div class="col-md-8">
+										{% if request.session.profadd %}
 											<div class="form-group">
-												<label class="control-label">State / Province</label>
-												<input type="text" class="form-control">
+												<label>Saved Address </label>
+												<div class="alert alert-warning" role="alert">
+                                   					<strong>{{request.session.profadd}} </strong>
+                               					</div>
+											<div>
+											<div class="form-group">
+												<label>Change Address:</label>
+												
+												<textarea  id="add"  placeholder=" Address *" name="address"  maxlength="250"  class="form-control border" required onkeyup="checkadd()"></textarea>
+												 <span id='add_err' class="text-danger"></span>
 											</div>
+										{% else %}
+											<div class="form-group">
+												<label>Address <span class="text-danger">*</span></label>
+												<textarea  id="add"  placeholder=" Address *" name="address"  maxlength="155"  class="form-control border" required onkeyup="checkadd()"></textarea>
+												<span id='add_err' class="text-danger"></span>
+											</div>
+										{% endif %}
+						
 										</div>
 										<div class="col-md-6">
+										{% if request.session.profpcode %}
 											<div class="form-group">
-												<label class="control-label">Country</label>
-												<input type="text" class="form-control">
+												<label>Saved Postal Code </label>
+												<div class="alert alert-warning" role="alert">
+                                   					<strong>{{request.session.profpcode}} </strong>
+                               					</div>
+											<div>
+												<div class="form-group">
+												<label class="control-label">Change Postal Code</label>
+												
+												<input type="text" id="pcode" name="pcode" required class="form-control" maxlength="6" onkeyup="checkpcode()">
+												 <span id='pcode_err' class="text-danger"></span><br>
+                                				 <span id='pcode_err2' class="text-danger"></span>
 											</div>
 										</div>
-										<div class="col-md-6">
+										{% else %}
+					
 											<div class="form-group">
 												<label class="control-label">Postal Code</label>
-												<input type="text" class="form-control">
+												<input type="text" name="pcode" id="pcode" required class="form-control" maxlength="6" onkeyup="checkpcode()">
+												 <span id='pcode_err' class="text-danger"></span><br>
+                                				 <span id='pcode_err2' class="text-danger"></span>
 											</div>
 										</div>
+										{% endif %}
 									</div>
+								{% if msg %}
+ 								<div class="alert alert-primary" role="alert">
+                                   <strong>sucess !  </strong>{{msg}} Please <u><a href="/prof/logout" class="alert-link">Logout</a></u> for Display changes.
+                                </div>
+								{% endif %}
+									</div>
+									<div class="submit-section submit-btn-bottom">
+								<center><button type="submit" id="sbtn" class="btn btn-transparent submit-btn">Save Changes</button></center>
+							</div>
 								</div>
-							</div>
+								
 							<!-- /Contact Details -->
-							
-			
-							
-							
-						 
-						
-		
-							
-							
-							
-							<div class="submit-section submit-btn-bottom">
-								<button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
-							</div>
-							
 						</div>
+						
 					</div>
 
 				</div>
 
 			</div>		
+	</div>
+	</div>
+	</div>
+</section>
+	<script>
+	function checkpcode(){
+            let p= $("#pcode").val();
+            if (!$.isNumeric(p)){
+                document.getElementById("pcode_err").innerHTML = "-Number Only";
+                $("#sbtn").attr("disabled","disabled")
+            }else{
+                document.getElementById("pcode_err").innerHTML = "";
+                $("#sbtn").removeAttr("disabled")
+            }
+        }
+
+	function checkadd(){
+            let p= $("#add").val();
+            if((p.length)  < 10 ){
+                document.getElementById("add_err").innerHTML = "-must be more than 10 latters";
+                $("#sbtn").attr("disabled","disabled")
+             }
+             else{
+                document.getElementById("add_err").innerHTML = "";
+                $("#sbtn").removeAttr("disabled")
+            }
+        }
+
+		
+</script>
 			<!-- /Page Content -->
    {% endblock content %}

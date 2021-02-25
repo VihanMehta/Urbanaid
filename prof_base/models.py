@@ -9,6 +9,8 @@ class Professional_mst(models.Model):
     Email = models.CharField(max_length=30, null=False, unique=True)
     ContactNo = models.CharField(max_length=10, null=False, unique=True)
     Qualification = models.CharField(max_length=50, null=False)
+    address =models.CharField(max_length=500, null=True,blank=True)
+    Postcode= models.CharField(max_length=10, null=True,blank=True)
     
     @staticmethod
     def get_prof_mst_by_username(UserName):
