@@ -1,7 +1,8 @@
 from django.db import models
 from prof_base.models import Professional_mst
 from django.urls import reverse
-import uuid
+from django.utils import timezone
+from django.db.models import Q
 
 
 class Professional_mst(models.Model):
@@ -48,22 +49,55 @@ class Service_mst(models.Model):
     def __str__(self):
         return self.ServiceName
 
+
 class booking_slot(models.Model):
-    order_id=models.CharField(primary_key=True, default=uuid.uuid4().hex[:8].upper(), max_length=50, editable=False)
+    order_status=(
+        (1,'PENDING'),
+        (2,'ACCEPTED'),
+        (3,'DECLINED'),
+        (4,'COMPLETE'),
+   )
+
+    payment_status_choices = (
+        (1, 'SUCCESS'),
+        (2, 'FAILURE' ),
+        (3, 'PENDING'),
+    )
+    order_id = models.CharField(unique=True, max_length=100, null=True, blank=True, default=None)
     ServiceName=models.CharField(max_length=255 ,null=True, blank=True)
     slot=models.CharField(max_length=255 ,null=True, blank=True)
     date=models.CharField(max_length=60, null=True, blank=True)
     user=models.CharField(max_length=60, null=True, blank=True)
+    datetime_of_payment = models.DateTimeField(default=timezone.now)
     professional=models.CharField(max_length=60, null=True, blank=True)
     razorpay_orderId=models.CharField(max_length=255 ,null=True, blank=True)
     razorpay_payment_id=models.CharField(max_length=155 ,null=True, blank=True)
     address=models.CharField(max_length=600, null=True, blank=True)
     pincode=models.CharField(max_length=10, null=True, blank=True)
     amount=models.IntegerField(null=True, blank=True)
-    booked=models.BooleanField(default=False)
+    status = models.IntegerField(choices = order_status, default=1)
+    payment_status = models.IntegerField(choices = payment_status_choices, default=3)
     
     def __str__(self):
         return self.order_id
+
+    def save(self, *args, **kwargs):
+        if self.order_id is None and self.datetime_of_payment and self.id:
+            self.order_id = self.datetime_of_payment.strftime('URBN%m%dODR') + str(self.id)
+        return super().save(*args, **kwargs)
+    
+    @staticmethod
+    def get_order_history_data(user):
+        try:
+            return booking_slot.objects.filter(status=4)
+        except:
+            return False
+    @staticmethod
+    def get_order_data(user):
+        try:
+            return booking_slot.objects.filter(~Q(status=4),user=user,payment_status=1)
+        except:
+            return False
 
 class payment_mst(models.Model):
     order_id=models.ForeignKey('booking_slot', on_delete=models.CASCADE)

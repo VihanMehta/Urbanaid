@@ -139,5 +139,5 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
 SESSION_COOKIE_AGE=9000
 
 #razorpay info
-Key_Id=''
-Key_Secret=''
+Key_Id='rzp_test_YiJ9yi27Z2L9t5'
+Key_Secret='ROOadZeZyof82mHGqowpn4Xu'

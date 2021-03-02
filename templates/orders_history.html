@@ -35,13 +35,13 @@
 								<div class="dashboard-widget">
 									<nav class="dashboard-menu">
 										<ul>
-											<li class="active">
+											<li>
 												<a href="/profile">
 													<i class="fas fa-columns"></i>
 													<span>Dashboard</span>
 												</a>
 											</li>
-											<li>
+                                            <li class="active">
 												<a href="/history">
 													<i class="fas fa-history"></i>
 													<span>History</span>
@@ -87,7 +87,7 @@
 									<nav class="user-tabs mb-4">
 										<ul class="nav nav-tabs nav-tabs-bottom nav-justified">
 											<li class="nav-item">
-												<a class="nav-link active" href="#pat_appointments" data-toggle="tab"><h3 >Your Bookings</h3></a>
+												<a class="nav-link active" href="#pat_appointments" data-toggle="tab"><h3 >Bookings History</h3></a>
 											</li>
 										</ul>
 									</nav>
@@ -122,13 +122,7 @@
 																	<td>{{i.date}} <span class="d-block text-info">{{i.slot}}</span></td>
 																	<td>{{i.datetime_of_payment}}</td>
 																	<td>{{i.amount}}</td>
-																	{% if i.status == 1 %}												
-																	<td><span class="badge badge-pill bg-success-light">PENDING</span></td>
-																	{% elif i.status == 2 %}
-																	<td><span class="badge badge-pill bg-success-light">ACCEPTED</span></td>
-																	{% elif i.status == 3 %}
-																	<td><span class="badge badge-pill bg-success-light">DECLINED</span></td>
-																	{% endif %}	
+																	<td><span class="badge badge-pill bg-success-light">COMPLETE</span></td>
 																	<td class="text-right">
 																		<div class="table-action">
 																			<a href="javascript:void(0);" class="btn btn-sm bg-primary-light">

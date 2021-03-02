@@ -1,10 +1,13 @@
 from django.shortcuts import render,redirect, HttpResponseRedirect
 from usr_base.models import User_mst , contactus
+from django.views.generic import TemplateView
+from admin_base.models import booking_slot
+
 from django.contrib.auth.hashers import make_password,check_password
-from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
-from django.contrib import messages
 from django.views import View
+
+curt_usr=None
 
 def index(request):
         return render(request,'index.html')
@@ -99,10 +102,13 @@ class Login(View):
             flag = check_password(Password, user.Password)  
             if flag:
                 request.session['user'] = user.UserName
+                global curt_usr
+                curt_usr=request.session['user']
                 request.session['name'] = user.FirstName +' '+ user.LastName
                 request.session['fname'] = user.FirstName 
                 request.session['lname'] = user.LastName
                 request.session['email'] = user.Email
+                request.session['gender']= user.Gender
                 request.session['address'] = user.address
                 request.session['pcode'] = user.Postcode
                 request.session['phone']=user.ContactNo
@@ -132,14 +138,19 @@ def usr_logout(request):
 def category(request):
     return render(request,'category.html')
 
+#------ order History--------------------
+def history(request):
+    user=request.session['user']
+    orders=booking_slot.get_order_history_data(user)
+    print(orders)
+    return render(request,"orders_history.html",{'orders':orders})
 #------------------- User Profile -------------------------
 
 def profile(request):
-    try:
-        if request.session['user']: 
-            return render(request,"profile.html")
-    except:
-        return redirect("login")
+    user=request.session['user']
+    orders=booking_slot.get_order_data(user)
+    print(orders)
+    return render(request,"profile.html",{'orders':orders})
 
 #------ update_profile---------------------
 
@@ -213,8 +224,40 @@ def changpass(request):
     except:
         return redirect("login")
     return render(request,'update_password.html',{'error':eror,'sucess':sucessmsg})
-   
 
+#------ genrating pdf-----
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import os 
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html  = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)#, link_callback=fetch_resources)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+class GenerateInvoice(View):
+    def get(self, request, order_id, *args, **kwargs):
+        try:
+            order_db = booking_slot.objects.get(order_id = order_id, user = request.session['user'], payment_status = 1)     #you can filter using order_id as well
+        except:
+            return HttpResponse("505 Not Found")
+        data = {
+            'order_id': order_db.order_id,
+            'transaction_id': order_db.razorpay_payment_id,
+            'user_email': order_db.user.email,
+            'date': str(order_db.datetime_of_payment),
+            'name': order_db.user.name,
+            'order': order_db,
+            'amount': order_db.total_amount,
+        }
+        pdf = render_to_pdf('invoice.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
 #-------------- Email Change--------------------------
 
 def emailchange(request):

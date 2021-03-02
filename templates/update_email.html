@@ -14,9 +14,15 @@
 					<!-- User Widget -->
 					<div class="widget user">
 						<!-- User Image -->
+						{% if request.session.gender == 'M' %}
 						<div class="image d-flex justify-content-center">
-							<img src="{% static 'images/user/user-thumb.jpg' %}" alt="" class="">
+							<img src="{% static '\images\male.png' %}" alt="" class="">
 						</div>
+						{% else %}
+						<div class="image d-flex justify-content-center">
+							<img src="{% static '\images\female.png' %}" alt="" class="">
+						</div>
+						{% endif %}
 						<!-- User Name -->
 						<h5 class="text-center">{{request.session.name}}</h5>
 					</div>

@@ -50,17 +50,14 @@ class servicedetailsView(TemplateView):
    
  #--------- Booking ---------
 def booking(request,**kwargs):
-    
-    try:
-        if request.session['user']:
             status=None
             sucess=None
             error=None
             url_slug=kwargs['slug']
             service= Service_mst.objects.get(slug=url_slug)
-            
-            booking=booking_slot.objects.all()
-            prof=service.Professionalid  
+            prof=service.Professionalid
+             
+            print(service.ServiceName)
             if request.method=='POST':
                 date=request.POST.get("date")  
                 Usr_choice=request.POST.get("slot")         
@@ -72,8 +69,8 @@ def booking(request,**kwargs):
                     return render(request,"booking.html",{'service':service,'prof':prof,'error':error})
                 else:   
                     try:
-                        book=booking_slot.objects.get(ServiceName=service.ServiceName,date=date,slot=Usr_choice)
-                        if book.booked==True:
+                        book_check=booking_slot.objects.get(ServiceName=service.ServiceName,date=date,slot=Usr_choice)
+                        if book_check.payment_status==1:
                             error="Sorry ! Slot is Not Available"
                             return render(request,"booking.html",{'service':service,'prof':prof,'error':error})
                         else:
@@ -82,15 +79,17 @@ def booking(request,**kwargs):
                             Time=Usr_choice
                             global Date
                             Date=date
+                            book=booking_slot.objects.create(user=request.session['user'],ServiceName=service.ServiceName) 
+                            book.save()
                     except:
                         status=True
                         Time=Usr_choice
                         Date=date
+                        book=booking_slot.objects.create(user=request.session['user'],ServiceName=service.ServiceName)
+                        book.save()
 
                     return render(request,"booking.html",{'service':service,'prof':prof,'sucess':sucess,'error':error,'confirm_date':date,'confirm_time':Usr_choice,'status':status})       
-    except:
-        return redirect("login")
-    return render(request,"booking.html",{'service':service,'prof':prof})
+            return render(request,"booking.html",{'service':service,'prof':prof})
         
 #------- add Payment gateway--------------------
 
@@ -115,13 +114,18 @@ def checkout(request,**kwargs):
         add=request.POST.get("add")
         pincode=request.POST.get("pcode")
         status=True
-        book=booking_slot.objects.create(ServiceName=service.ServiceName,
-                            slot=Time,date=Date,
-                            user=request.session['user'],
-                            professional=prof_name,
-                            pincode=pincode,
-                            amount=final_price
-        )
+        try:       
+            book=booking_slot.objects.get(ServiceName=service.ServiceName,razorpay_orderId=None,user=request.session['user'])
+        except:
+            return HttpResponse("Error 505")
+        book.ServiceName=service.ServiceName
+        book.slot=Time
+        book.date=Date
+        book.amount=final_price
+        book.professional=prof_name
+        book.address=add
+        book.pincode=pincode
+        amount=final_price
         book.save()
         data_save="data successfully Save !"
         order_amount = final_price*100
@@ -153,16 +157,21 @@ def payment_status(request):
             order_db.razorpay_payment_id=payment_Id
             order_db.booked=True
             order_db.save()
-            result=razorpay_client.utility.verify_payment_signature(param_dict)
-            
+            result=razorpay_client.utility.verify_payment_signature(param_dict)   
             if result==None:
                 amount=order_db.amount*100
                 try:
                     razorpay_client.payment.capture(payment_Id,amount)
+                    order_db.payment_status=1
+                    order_db.save()
                     return render(request,"book-sucess.html")
                 except:
-                   return render(request,"book-fail.html") 
+                    order_db.payment_status=2
+                    order_db.save()
+                    return render(request,"book-fail.html") 
             else:
+                order_db.payment_status=2
+                order_db.save()
                 return render(request,"book-fail.html")
         except:
             return render(request,"book-fail.html")
