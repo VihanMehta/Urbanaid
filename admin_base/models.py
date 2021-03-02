@@ -1,6 +1,8 @@
 from django.db import models
 from prof_base.models import Professional_mst
 from django.urls import reverse
+import uuid
+
 
 class Professional_mst(models.Model):
     UserName = models.CharField(max_length=10, null=False, unique=True)
@@ -42,14 +44,33 @@ class Service_mst(models.Model):
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
     rate=models.CharField(choices=rate_choice ,max_length=5 , blank=True)
+
     def __str__(self):
         return self.ServiceName
-"""      
-class TimeSlotBook(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-   manager_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="manager_id")
-   customer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="customer_id")
-    date = models.DateField(null=False)
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
-    start_time = models.TimeField(null=False)
-    end_time = models.TimeField(null=False)"""
+
+class booking_slot(models.Model):
+    order_id=models.CharField(primary_key=True, default=uuid.uuid4().hex[:8].upper(), max_length=50, editable=False)
+    ServiceName=models.CharField(max_length=255 ,null=True, blank=True)
+    slot=models.CharField(max_length=255 ,null=True, blank=True)
+    date=models.CharField(max_length=60, null=True, blank=True)
+    user=models.CharField(max_length=60, null=True, blank=True)
+    professional=models.CharField(max_length=60, null=True, blank=True)
+    razorpay_orderId=models.CharField(max_length=255 ,null=True, blank=True)
+    razorpay_payment_id=models.CharField(max_length=155 ,null=True, blank=True)
+    address=models.CharField(max_length=600, null=True, blank=True)
+    pincode=models.CharField(max_length=10, null=True, blank=True)
+    amount=models.IntegerField(null=True, blank=True)
+    booked=models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.order_id
+
+class payment_mst(models.Model):
+    order_id=models.ForeignKey('booking_slot', on_delete=models.CASCADE)
+    UserName=models.CharField(max_length=155 ,null=True, blank=True)
+    serviceName=models.CharField(max_length=255 ,null=True, blank=True)
+    payment_id=models.CharField(max_length=155 ,null=True, blank=True)
+    amount=models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.payment_id

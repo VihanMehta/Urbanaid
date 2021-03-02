@@ -105,6 +105,7 @@ class Login(View):
                 request.session['email'] = user.Email
                 request.session['address'] = user.address
                 request.session['pcode'] = user.Postcode
+                request.session['phone']=user.ContactNo
                 if Login.return_url:
                     return HttpResponseRedirect(Login.return_url)
                 else:

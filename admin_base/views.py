@@ -1,8 +1,14 @@
-from django.shortcuts import render,get_list_or_404
+from django.shortcuts import render,get_list_or_404,redirect,HttpResponse
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
+from urbanaid.settings import   Key_Id ,Key_Secret
 from .models import *
+import razorpay
+razorpay_client=razorpay.Client(auth=(Key_Id,Key_Secret))
 
+Time = None
+Date=None
 #----- paginator / page of service post---------------
 def service(request):
     categories = Category_mst.objects.all()
@@ -36,15 +42,128 @@ class servicedetailsView(TemplateView):
         context = super().get_context_data(**kwargs)
         url_slug=self.kwargs['slug']
         services_list= Service_mst.objects.get(slug=url_slug)
-        data = Professional_mst.objects.all()
-        stu = {"prof": data}
+        prof=services_list.Professionalid
+        data = Professional_mst.objects.get(UserName=prof)
+        context['prof'] = data
         context['services_list'] = services_list
         return context
    
  #--------- Booking ---------
-def booking(request):
-    return render(request,'booking.html')
+def booking(request,**kwargs):
+    
+    try:
+        if request.session['user']:
+            status=None
+            sucess=None
+            error=None
+            url_slug=kwargs['slug']
+            service= Service_mst.objects.get(slug=url_slug)
+            
+            booking=booking_slot.objects.all()
+            prof=service.Professionalid  
+            if request.method=='POST':
+                date=request.POST.get("date")  
+                Usr_choice=request.POST.get("slot")         
+                if not date:
+                    error="Please select date !"
+                    return render(request,"booking.html",{'service':service,'prof':prof,'error':error})
+                elif not Usr_choice:
+                    error="Please select Time Slot !"
+                    return render(request,"booking.html",{'service':service,'prof':prof,'error':error})
+                else:   
+                    try:
+                        book=booking_slot.objects.get(ServiceName=service.ServiceName,date=date,slot=Usr_choice)
+                        if book.booked==True:
+                            error="Sorry ! Slot is Not Available"
+                            return render(request,"booking.html",{'service':service,'prof':prof,'error':error})
+                        else:
+                            status=True
+                            global Time
+                            Time=Usr_choice
+                            global Date
+                            Date=date
+                    except:
+                        status=True
+                        Time=Usr_choice
+                        Date=date
+
+                    return render(request,"booking.html",{'service':service,'prof':prof,'sucess':sucess,'error':error,'confirm_date':date,'confirm_time':Usr_choice,'status':status})       
+    except:
+        return redirect("login")
+    return render(request,"booking.html",{'service':service,'prof':prof})
+        
+#------- add Payment gateway--------------------
+
 
  #--------- Checkout ---------
-def checkout(request):
-    return render(request,'checkout.html')
+def checkout(request,**kwargs):
+    status=None
+    data_save=None
+    razor_id=None
+    order_amount=None
+    order_id=None
+    add=None
+    pincode=None
+    url_slug=kwargs['slug']
+    service= Service_mst.objects.get(slug=url_slug)
+    prof=service.Professionalid 
+    name=Professional_mst.objects.get(UserName=service.Professionalid)
+    prof_name=name.UserName
+    final_price=int(50+service.price)
+    print(Time,Date)
+    if request.method=='POST':
+        add=request.POST.get("add")
+        pincode=request.POST.get("pcode")
+        status=True
+        book=booking_slot.objects.create(ServiceName=service.ServiceName,
+                            slot=Time,date=Date,
+                            user=request.session['user'],
+                            professional=prof_name,
+                            pincode=pincode,
+                            amount=final_price
+        )
+        book.save()
+        data_save="data successfully Save !"
+        order_amount = final_price*100
+        order_currency = 'INR'
+        razorpay_order=razorpay_client.order.create(dict(amount=order_amount,currency=order_currency,receipt=book.order_id,payment_capture='0'))
+        razor_id=razorpay_order['id']
+        book.razorpay_orderId=razor_id
+        book.save()
+        return render(request,'checkout.html',{'service':service,'order_id':razor_id,'price':final_price,'final_price':int(final_price*100),'prof':prof,'order_amount':order_amount,'data_save':data_save,'status':status})
+    return render(request,'checkout.html',{'service':service,'order_id':razor_id,'price':final_price,'final_price':int(final_price*100),'prof':prof,'order_amount':order_amount,'data_save':data_save,'status':status})
+
+
+@csrf_exempt
+def payment_status(request):
+    if request.method=='POST':
+        try:
+            payment_Id=request.POST.get('razorpay_payment_id','')
+            order_Id=request.POST.get('razorpay_order_id','')
+            signature=request.POST.get('razorpay_signature','')
+            param_dict={
+                'razorpay_payment_id': payment_Id,
+                'razorpay_order_id':order_Id,
+                'razorpay_signature':signature
+            }
+            try:
+                order_db=booking_slot.objects.get(razorpay_orderId=order_Id) 
+            except:
+                return render(request,"book-fail.html")
+            order_db.razorpay_payment_id=payment_Id
+            order_db.booked=True
+            order_db.save()
+            result=razorpay_client.utility.verify_payment_signature(param_dict)
+            
+            if result==None:
+                amount=order_db.amount*100
+                try:
+                    razorpay_client.payment.capture(payment_Id,amount)
+                    return render(request,"book-sucess.html")
+                except:
+                   return render(request,"book-fail.html") 
+            else:
+                return render(request,"book-fail.html")
+        except:
+            return render(request,"book-fail.html")
+    return render(request,"book-sucess.html")

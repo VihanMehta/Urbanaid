@@ -166,12 +166,11 @@
 					<!-- User Profile widget -->
 					<div class="widget user text-center">
 						<img class="rounded-circle img-fluid mb-5 px-5" src="{% static 'images/user/user-thumb.jpg' %}" alt="">
-						<h4><a href="">{{services_list.Professionalid}}</a></h4>
-						<p class="member-time">Member Since Jun 27, 2017</p>
-						<a href="">See all ads</a>
-						<ul class="list-inline mt-20">
-							<li class="list-inline-item"><a href="/booking" class="btn btn-contact d-inline-block  btn-primary px-lg-5 my-1 px-md-3">Book</a></li>
-						</ul>
+						<h3>{{prof.FirstName}} {{prof.LastName}}</h3>
+						<p class="member-time">{{services_list.created}}</p>
+						<div class="submit-section mt-4">
+							<a href="{% url 'urbanaid:BookingDeatils' services_list.slug %}"> <button  type="submit" class="btn btn-transparent submit-btn">Book service</button></a>
+						</div>
 					</div>
 					<!-- Safety tips widget -->
 					<div class="widget disclaimer">

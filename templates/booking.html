@@ -4,211 +4,240 @@
 {%block title%} Profile {%endblock title%}
 
 {%block content%}
-	<!-- Breadcrumb -->
-			<div class="breadcrumb-bar">
-				<div class="container-fluid">
-					<div class="row align-items-center">
-						<div class="col-md-12 col-12">
-							<nav aria-label="breadcrumb" class="page-breadcrumb">
-								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Booking</li>
-								</ol>
-							</nav>
-							<h2 class="breadcrumb-title">Booking</h2>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Breadcrumb -->
-			
-			<!-- Page Content -->
-			<div class="content">
-				<div class="container">
-				
-					<div class="row">
-						<div class="col-12">
-						
-							<div class="card">
+<style>
+
+.container-fluid {
+    padding-top: 120px !important;
+    padding-bottom: 120px !important
+}
+
+.card {
+    box-shadow: 0px 4px 8px 0px #7986CB
+}
+
+input {
+    padding: 10px 20px !important;
+    border: 1px solid #000 !important;
+    border-radius: 10px;
+    box-sizing: border-box;
+   
+    color: #fff !important;
+    font-size: 16px;
+    letter-spacing: 1px;
+    width: 180px
+}
+
+.datepicker-text {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #512DA8;
+    outline-width: 0
+}
+
+::placeholder {
+    color: #fff;
+    opacity: 1
+}
+
+:-ms-input-placeholder {
+    color: #fff
+}
+
+::-ms-input-placeholder {
+    color: #fff
+}
+
+.datepicker {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: none;
+    padding: 10px !important
+}
+
+.datepicker-dropdown:after {
+    border-bottom: 6px solid #000
+}
+
+thead tr:nth-child(3) th {
+    color: #fff !important;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 10px
+}
+
+.dow,
+.old-day,
+.day,
+.new-day {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 0px !important
+}
+
+.old-day:hover,
+.day:hover,
+.new-day:hover,
+.month:hover,
+.year:hover,
+.decade:hover,
+.century:hover {
+    border-radius: 6px !important;
+    background-color: #eee;
+    color: #000
+}
+
+.active {
+    border-radius: 6px !important;
+    background-image: linear-gradient(#90CAF9, #64B5F6) !important;
+    color: #000 !important
+}
+
+.disabled {
+    color: #616161 !important
+}
+
+.prev,
+.next,
+.datepicker-switch {
+    border-radius: 0 !important;
+    padding: 20px 10px !important;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #fff !important;
+    opacity: 0.8
+}
+
+.prev:hover,
+.next:hover,
+.datepicker-switch:hover {
+    background-color: inherit !important;
+    opacity: 1
+}
+
+.cell {
+    border: 1px solid #BDBDBD;
+    margin: 2px;
+    cursor: pointer
+}
+
+.cell:hover {
+    border: 1px solid #3D5AFE
+}
+
+.cell.select {
+    background-color: #3D5AFE;
+    color: #fff
+}
+
+.fa-calendar {
+    color: #fff;
+    font-size: 30px;
+    padding-top: 8px;
+    padding-left: 5px;
+    cursor: pointer
+}
+</style>
+<section>
+<br>
+<br>
+<div class="container">
+    <div class="card">
 								<div class="card-body">
 									<div class="booking-doc-info">
-										<a href="doctor-profile.html" class="booking-doc-img">
-											<img src="{% static 'images/user/user-thumb.jpg' %}" alt="User Image">
+										<a href="{% url 'urbanaid:serviceDetail' service.slug %}" class="booking-doc-img">
+											<img  src="{{service.image.url}}" alt="User Image">
 										</a>
 										<div class="booking-info">
-											<h4><a href="doctor-profile.html">Dr. Darren Elder</a></h4>
+											<h4><a href="{% url 'urbanaid:serviceDetail' service.slug %}">{{service.ServiceName}}</a></h4>
 											<div class="rating">
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star"></i>
-												<span class="d-inline-block average-rating">35</span>
+												{{service.rate}}<i class="fas fa-star filled"></i>
 											</div>
-											<p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</p>
+											<p class="text-muted mb-0"> <strong>By </strong>{{prof.FirstName}} {{prof.LastName}}</p>
 										</div>
 									</div>
 								</div>
 							</div>
-							
-							<!-- Schedule Widget -->
-							<div class="card booking-schedule schedule-widget">
-							
-								<!-- Schedule Header -->
-								<div class="schedule-header">
-									<div class="row">
-										<div class="col-md-12">
-										
-											<!-- Day Slot -->
-											<div class="day-slot">
-												<ul>
-													
-													<li>
-														<span>Mon</span>
-														<span class="slot-date">11 Nov <small class="slot-year">2019</small></span>
-													</li>
-													<li>
-														<span>Tue</span>
-														<span class="slot-date">12 Nov <small class="slot-year">2019</small></span>
-													</li>
-													<li>
-														<span>Wed</span>
-														<span class="slot-date">13 Nov <small class="slot-year">2019</small></span>
-													</li>
-													<li>
-														<span>Thu</span>
-														<span class="slot-date">14 Nov <small class="slot-year">2019</small></span>
-													</li>
-													<li>
-														<span>Fri</span>
-														<span class="slot-date">15 Nov <small class="slot-year">2019</small></span>
-													</li>
-													<li>
-														<span>Sat</span>
-														<span class="slot-date">16 Nov <small class="slot-year">2019</small></span>
-													</li>
-													<li>
-														<span>Sun</span>
-														<span class="slot-date">17 Nov <small class="slot-year">2019</small></span>
-													</li>
-			
-												</ul>
-											</div>
-											<!-- /Day Slot -->
-											
-										</div>
-									</div>
-								</div>
-								<!-- /Schedule Header -->
-								
-								<!-- Schedule Content -->
-								<div class="schedule-cont">
-									<div class="row">
-										<div class="col-md-12">
-										
-											<!-- Time Slot -->
-											<div class="time-slot">
-												<ul class="clearfix">
-													<li>
-														<a class="timing" href="#">
-															<span>9:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>10:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>11:00</span> <span>AM</span>
-														</a>
-													</li>
-													<li>
-														<a class="timing" href="#">
-															<span>9:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>10:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>11:00</span> <span>AM</span>
-														</a>
-													</li>
-													<li>
-														<a class="timing" href="#">
-															<span>9:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>10:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>11:00</span> <span>AM</span>
-														</a>
-													</li>
-													<li>
-														<a class="timing" href="#">
-															<span>9:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>10:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>11:00</span> <span>AM</span>
-														</a>
-													</li>
-													<li>
-														<a class="timing" href="#">
-															<span>9:00</span> <span>AM</span>
-														</a>
-														<a class="timing selected" href="#">
-															<span>10:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>11:00</span> <span>AM</span>
-														</a>
-													</li>
-													<li>
-														<a class="timing" href="#">
-															<span>9:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>10:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>11:00</span> <span>AM</span>
-														</a>
-													</li>
-													<li>
-														<a class="timing" href="#">
-															<span>9:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>10:00</span> <span>AM</span>
-														</a>
-														<a class="timing" href="#">
-															<span>11:00</span> <span>AM</span>
-														</a>
-													</li>
-												</ul>
-											</div>
-											<!-- /Time Slot -->
-											
-										</div>
-									</div>
-								</div>
-								<!-- /Schedule Content -->
-								
+<div class="card border-0">
+    {% if  status is None %}            
+                    <div class="card-header bg-dark">
+					<form method='POST'>
+                          {% csrf_token %}
+                        <div class="mx-0 mb-0 row justify-content-sm-center justify-content-start px-1"> <input type="text" name="date" id="dp1" autocomplete="off" class="datepicker" placeholder="Pick Date" name="date" readonly><span class="fa fa-calendar"></span> 
+						 &nbsp;&nbsp;&nbsp; <button type="submit"  class="btn btn-transparent justify-content-sm-center justify-content-start px-1 rounded ">Select</button></div>
+                    </div>
+                    <div class="card-body justify-content-center p-3 p-sm-5">
+                        <div class="row justify-content-center mx-0">
+                            <select name="slot">
+                                <option value="" > Select Time </option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                                <option value="7:00 PM">7:00 PM</option>
+                                <option value="9:00 PM">9:00 PM</option>
+                            </select>
+                        </div>
+                        {% if error%}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>{{error}}</strong> </br>
+                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                            {% endif %}
+                    </div>
+        </form>
+			</div>
+      </div>
+    </div>
+    
+  </div>
+  {% else %}
+  <div class="card-header bg-dark">
+  <h3 class="text-warning"><center>Confirm Booking</center></h3>
+  </div>
+								<table class="table table-bordered product-table">
+									<tbody>
+										<tr>
+											<td>Date </td>
+											<td>{{confirm_date}}</td>
+										</tr>
+										<tr>
+											<td>Time</td>
+											<td>{{confirm_time}}</td>
+										</tr>
+                  <tbody>
+                  </table>
+                  <br>
+                  <form method="POST" name="pass">
+                  {% csrf_token %}
+                <div class="submit-section ">
+								<center><a href="{% url 'urbanaid:checkout' service.slug %}"><button type="submit" form="pass"  class="btn btn-transparent submit-btn" name="data" value="vihan"><i class="fas fa-forward"></i>Next</button></a></center>
 							</div>
-							<!-- /Schedule Widget -->
-							
-							<!-- Submit Section -->
-							<div class="submit-section proceed-btn text-right">
-								<a href="/checkout" class="btn btn-transparent submit-btn">Proceed to Pay</a>
-							</div>
-							<!-- /Submit Section -->
-							
-						</div>
-					</div>
-				</div>
+              </form>
+      {% endif %}
+  
+  <br>
+<br>
 
-			</div>		
-			<!-- /Page Content -->
+</section>
+<script >
+ $(document).ready(function(){
+
+$('.datepicker').datepicker({
+format: 'dd-mm-yyyy',
+autoclose: true,
+startDate: '0d'
+});
+
+$('.cell').click(function(){
+$('.cell').removeClass('select');
+$(this).addClass('select');
+});
+
+});
+        </script>
 {%endblock content%}
-   
+  
