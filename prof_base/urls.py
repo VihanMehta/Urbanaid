@@ -7,5 +7,6 @@ urlpatterns = [
     path('profile',views.profile_set),
     path('changepass',views.changepass),
     path('reviews',views.review),
+    path('history',views.history),
     path('',views.dashbord,name="dashbord"),
 ]

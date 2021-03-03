@@ -1,15 +1,13 @@
 from django.shortcuts import render,redirect
 from admin_base.models import Professional_mst
 from django.contrib import messages
+from usr_base.models import User_mst
+from admin_base.models import booking_slot
 from django.contrib.sessions.models import Session
 
 def prof_login(request):
     error_msg=None
-    try:
-        if request.session['professional']:
-            return redirect("dashbord")  
-    except:
-        if request.method=='POST':
+    if request.method=='POST':
                 UserName = request.POST.get('uname')
                 Password = request.POST.get('psw')
                 try:
@@ -22,6 +20,7 @@ def prof_login(request):
                         request.session['proflname']=match.LastName
                         request.session['profemail']=match.Email
                         request.session['profphone']=match.ContactNo
+                        request.session['profgender']=match.Gender
                         request.session['profqulifiaction']=match.Qualification
                         request.session['profadd']=match.address
                         request.session['profpcode']=match.Postcode
@@ -30,8 +29,7 @@ def prof_login(request):
                         error_msg="Enter Valid Password !"
                         return render(request,"Prof_login.html",{'error':error_msg})
                 except:
-                    error_msg="Invalid Username & Password ! "
-                return render(request,"Prof_login.html",{'error':error_msg})
+                    return render(request,"Prof_login.html",{'error':error_msg})
     return render(request,"Prof_login.html",{'error':error_msg})
             
         
@@ -44,13 +42,42 @@ def prof_logout(request):
         return redirect('proflogin')
     return redirect('proflogin')
 
+#------- dashboard-------
 def dashbord(request):
     try:
         if request.session['professional']:
-            return render(request,"Profesional-dashboard.html")
+            prof=request.session['professional']
+            orders=booking_slot.get_professional_order_data(prof)
+            accepted_orders=booking_slot.get_Accepted_orders(prof)
+            declined_orders=booking_slot.get_declined_orders(prof)
+            if request.method=='POST':
+                order_id=request.POST.get('order_id')
+                change_status=request.POST.get('status')
+                try:
+                    change=booking_slot.objects.get(order_id=order_id)
+                except:
+                    return render(request,"Profesional-dashboard.html",{'orders':orders,'accepted_orders':accepted_orders,'declined_orders':declined_orders})
+                change.status=change_status
+                change.save()
+            return render(request,"Profesional-dashboard.html",{'orders':orders,'accepted_orders':accepted_orders,'declined_orders':declined_orders})
     except:
-        return redirect("proflogin")
+        return redirect('proflogin')
+    return redirect('proflogin')
 
+
+#----- History---------------
+def history(request):
+    try:
+        if request.session['professional']:
+            prof=request.session['professional']
+            orders=booking_slot.get_completed_orders(prof)
+        return render(request,"prof_history.html",{'orders':orders})
+    except:
+        return redirect('proflogin')
+    return redirect('proflogin')
+
+
+#-------- profile------------------
 def profile_set(request):
     msg=None
     try:
@@ -81,6 +108,7 @@ def review(request):
     except:
         return redirect("proflogin")
 
+#---
 def changepass(request):
     error=None
     sucess=None

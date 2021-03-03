@@ -1,5 +1,5 @@
 from django.db import models
-from prof_base.models import Professional_mst
+
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Q
@@ -96,7 +96,7 @@ class booking_slot(models.Model):
     @staticmethod
     def get_order_history_data(user):
         try:
-            return booking_slot.objects.filter(status=4)
+            return booking_slot.objects.filter(status=4,user=user,payment_status=1)
         except:
             return False
     @staticmethod
@@ -106,6 +106,34 @@ class booking_slot(models.Model):
         except:
             return False
 
+    @staticmethod
+    def get_professional_order_data(user):
+        try:
+            return booking_slot.objects.filter(status=1,professional=user,payment_status=1)
+        except:
+            return False
+
+    @staticmethod
+    def get_Accepted_orders(user):
+        try:
+            return booking_slot.objects.filter(status=2,professional=user,payment_status=1)
+        except:
+            return False
+
+    @staticmethod
+    def get_declined_orders(user):
+        try:
+            return booking_slot.objects.filter(status=3,professional=user,payment_status=1)
+        except:
+            return False
+    
+    @staticmethod
+    def get_completed_orders(user):
+        try:
+            return booking_slot.objects.filter(status=4,professional=user,payment_status=1)
+        except:
+            return False
+            
 class payment_mst(models.Model):
     order_id=models.ForeignKey('booking_slot', on_delete=models.CASCADE)
     UserName=models.CharField(max_length=155 ,null=True, blank=True)

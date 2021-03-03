@@ -13,7 +13,7 @@
 							<nav aria-label="breadcrumb" class="page-breadcrumb">
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+									<li class="breadcrumb-item active" aria-current="page">History</li>
 								</ol>
 							</nav>
 							<h2 class="breadcrumb-title">Dashboard</h2>
@@ -53,18 +53,19 @@
 								<div class="dashboard-widget">
 									<nav class="dashboard-menu">
 										<ul>
-											<li class="active">
+											<li >
 												<a href="/prof">
 													<i class="fas fa-columns"></i>
 													<span>Dashboard</span>
 												</a>
 											</li>
-											<li>
+                                            <li class="active">
 												<a href="/prof/history">
 													<i class="fas fa-columns"></i>
 													<span>Service History</span>
 												</a>
 											</li>
+											
 											<li>
 												<a href="/prof/reviews">
 													<i class="fas fa-star"></i>
@@ -105,31 +106,16 @@
 							
 							<div class="row">
 								<div class="col-md-12">
-									<h4 class="mb-4">Patient Appoinment</h4>
+									
 									<div class="appointment-tab">
 									
-										<!-- Appointment Tab -->
-										<ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-											<li class="nav-item">
-												<a class="bg-warning-light nav-link active" href="#upcoming-appointments" data-toggle="tab">Upcoming orders</a>
-											</li> 
-											&nbsp;
-											&nbsp;
-											<li class=" nav-item">
-												<a class="bg-warning-light nav-link" href="#accepted-appointments" data-toggle="tab">Accepted Orders</a>
-											</li> 
-											&nbsp;
-											&nbsp;
-											<li class=" nav-item">
-												<a class="bg-warning-light nav-link" href="#declined-appointments" data-toggle="tab">Declined Orders</a>
-											</li> 
+                                        <h3 >Service  History</h3>
+                        
 											
-										</ul>
-										<!-- /Appointment Tab -->
-										
+										<hr>
 										<div class="tab-content">
 										
-											<!-- Upcoming Appointment Tab -->
+											<!-- History Appointment Tab -->
 											<div class="tab-pane show active" id="upcoming-appointments">
 												<div class="card card-table mb-0">
 													<div class="card-body">
@@ -152,7 +138,7 @@
 																<tbody>
 																	<tr>
 																		
-																		<td >{{i.user}}</td>
+																		<td>{{i.user}}</td>
 																		<td class="text-danger">#{{i.order_id}}</td>
 																		<td>{{i.ServiceName}}</td>
 																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
@@ -207,23 +193,18 @@
 
 																		
 																		<td class="text-right">
-																		<form method="POST" id="{{i.id}}">
-      																		{%csrf_token%}
+																		
 																			<div class="table-action">
 														
-																				<input type="hidden" name="order_id" value="{{i.order_id}}">
-																				<button type="submit" form="{{i.id}}" name="status" value="2" class="btn-block btn-sm bg-success-light">
-																					<i class="fas fa-check"></i> ACCEPTE
-																				</button>
-																				<button type="submit" form="{{i.id}}" name="status" value="3"  class="btn-block btn-sm bg-danger-light">
-																					<i class="fas fa-times"></i> DECLINED
-																				</button>
+																				<a href="/generateinvoice/{{i.order_id}}/" class="btn btn-sm bg-primary-light">
+																				<i class="fas fa-print"></i> Print
+																				</a>
 																			</div>
-																		</form>
+																	
 																		</td>
 																	</tr>
 																
-																</tbody>
+																</tbody> 
 							
 	{% endfor %}
 															</table>		
@@ -231,91 +212,8 @@
 													</div>
 												</div>
 											</div>
-											<!-- /Upcoming Appointment Tab -->
-									   		<!-- Accepted Appointment Tab -->
-											<div class="tab-pane" id="accepted-appointments">
-												<div class="card card-table mb-0">
-													<div class="card-body">
-														<div class="table-responsive">
-															<table class="table table-hover table-center mb-0">
-																<thead>
-																	<tr>
-																		<th>Client UserID </th>
-																		<th> OrderId</th>
-																		<th>Service</th>
-																		<th>Order Date</th>							
-																		<th>Paid Amount</th>
-																		<th class="text-center"></th>
-																		
-																	</tr>
-																</thead>
-																{% for i in accepted_orders  %}
-																<tbody>
-																	<td>{{i.user}}</td>
-																		<td class="text-danger">#{{i.order_id}}</td>
-																		<td>{{i.ServiceName}}</td>
-																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
-																		<td class="text-center">Rs.{{i.amount}}</td>
-																		<td class="text-right">
-																			<div class="table-action">
-																				<a href="/generateinvoice/{{i.order_id}}/" class="btn btn-sm bg-primary-light">
-																				<i class="fas fa-print"></i> Print
-																				</a>
-																		<form method="POST" id="{{i.id}}">
-      																		{%csrf_token%}
-																					  <input type="hidden" name="order_id" value="{{i.order_id}}">
-																				<button type="submit" form="{{i.id}}" name="status" value="4" class="btn-block btn-sm bg-success-light">
-																					<i class="fas fa-check"></i> Click Here after succesfully Order complition
-																				</button>
-																		</form>
-																			</div>
-																		</td>
-																	</tr>
-																	{% endfor %}
-																</tbody>
-															</table>		
-														</div>	
-													</div>	
-												</div>	
-											</div>
-											<!-- /Today Appointment Tab -->
-											<!-- Declined Appointment Tab-->
-											<div class="tab-pane" id="declined-appointments">
-												<div class="card card-table mb-0">
-													<div class="card-body">
-														<div class="table-responsive">
-															<table class="table table-hover table-center mb-0">
-																<thead>
-																	<tr>
-																		<th>Client UserID </th>
-																		<th>Declined OrderId</th>
-																		<th>Service</th>
-																		<th>Order Date</th>							
-																		<th></th>
-																		
-																	</tr>
-																</thead>
-															{% for i in declined_orders %}
-																<tbody>
-																	<td>{{i.user}}</td>
-																		<td class="text-danger">#{{i.order_id}}</td>
-																		<td>{{i.ServiceName}}</td>
-																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
-																		<td class="text-center"><a href="javascript:void(0);" class="btn btn-sm bg-warning-light">
-																					<i class="fas fa-times"></i>
-																						Declined
-																				</a></td>
-																		
-						
-																	</tr>
-																	{% endfor %}
-																</tbody>
-															</table>		
-														</div>	
-													</div>	
-												</div>	
-											</div>
-											<!-- /Declined Appointment Tab -->
+											<!-- /history Appointment Tab -->
+									   		
 					
 										</div>
 									</div>

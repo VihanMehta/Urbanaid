@@ -2,16 +2,17 @@ from django.shortcuts import render,get_list_or_404,redirect,HttpResponse
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
-from urbanaid.settings import   Key_Id ,Key_Secret
+from urbanaid import settings
 from .models import *
 import razorpay
-razorpay_client=razorpay.Client(auth=(Key_Id,Key_Secret))
+razorpay_client=razorpay.Client(auth=(settings.Key_Id,settings.Key_Secret))
 
 Time = None
 Date=None
 #----- paginator / page of service post---------------
 def service(request):
     categories = Category_mst.objects.all()
+    print(settings.Key_Id,settings.Key_Secret)
     all_post = Paginator(Service_mst.objects.filter(available = True),3) #number of post per page
     page = request.GET.get('page')
     try:
@@ -53,6 +54,7 @@ def booking(request,**kwargs):
             status=None
             sucess=None
             error=None
+            Usr_choice=None
             url_slug=kwargs['slug']
             service= Service_mst.objects.get(slug=url_slug)
             prof=service.Professionalid
