@@ -17,6 +17,13 @@ class Professional_mst(models.Model):
 
     def __str__(self):
         return (self.UserName)
+
+    @staticmethod
+    def get_prof_mst_by_username(UserName):
+        try:
+            return Professional_mst.objects.get(UserName=UserName)
+        except:
+            return False
     
 class Category_mst(models.Model):
     CategoryName = models.CharField(max_length=25, db_index=True ,null=False)
@@ -36,8 +43,8 @@ rate_choice=(
 class Service_mst(models.Model):
     Categoryid = models.ForeignKey('Category_mst', max_length=7, on_delete=models.CASCADE)
     Professionalid = models.ForeignKey('Professional_mst', max_length=5, on_delete=models.CASCADE)
-    ServiceName=models.CharField(max_length=20, db_index=True)
-    slug= models.SlugField(max_length=200,unique=True)
+    ServiceName=models.CharField(max_length=355, db_index=True)
+    slug= models.SlugField(max_length=455,unique=True)
     image=models.ImageField(upload_to='services/%Y/%m/%d', blank = True)
     description=models.TextField(blank=True)
     price=models.DecimalField(max_digits=10, decimal_places=2)

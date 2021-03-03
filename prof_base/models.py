@@ -12,12 +12,6 @@ class Professional_mst(models.Model):
     address =models.CharField(max_length=500, null=True,blank=True)
     Postcode= models.CharField(max_length=10, null=True,blank=True)
     
-    @staticmethod
-    def get_prof_mst_by_username(UserName):
-        try:
-            return Professional_mst.objects.get(UserName=UserName)
-        except:
-            return False
 
 class Professional_Contact(models.Model):
      FirstName = models.CharField(max_length=10, null=False)

@@ -20,7 +20,7 @@ class ProfesionalAdmin(admin.ModelAdmin):
 
 @admin.register(booking_slot)
 class ProfesionalAdmin(admin.ModelAdmin):
-    list_display= ['order_id','ServiceName','slot','date','user','professional','razorpay_orderId','razorpay_payment_id','address','pincode','amount','status','payment_status']
+    list_display= ['id','order_id','ServiceName','slot','date','user','professional','razorpay_orderId','razorpay_payment_id','address','pincode','amount','status','payment_status']
     list_editable=['slot','date','payment_status','status']
     list_filter=['date','payment_status','status']
 

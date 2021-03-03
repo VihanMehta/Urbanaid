@@ -2,7 +2,6 @@ from django.shortcuts import render,redirect, HttpResponseRedirect
 from usr_base.models import User_mst , contactus
 from django.views.generic import TemplateView
 from admin_base.models import booking_slot
-
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.sessions.models import Session
 from django.views import View
@@ -244,17 +243,20 @@ def render_to_pdf(template_src, context_dict={}):
 class GenerateInvoice(View):
     def get(self, request, order_id, *args, **kwargs):
         try:
+            user=User_mst.objects.get(UserName=request.session['user'])
             order_db = booking_slot.objects.get(order_id = order_id, user = request.session['user'], payment_status = 1)     #you can filter using order_id as well
         except:
             return HttpResponse("505 Not Found")
         data = {
             'order_id': order_db.order_id,
             'transaction_id': order_db.razorpay_payment_id,
-            'user_email': order_db.user.email,
+            'user_email': user.Email,
             'date': str(order_db.datetime_of_payment),
-            'name': order_db.user.name,
+            'name': user.FirstName + ' '+user.LastName,
             'order': order_db,
-            'amount': order_db.total_amount,
+            'service':order_db.ServiceName,
+            'amount': order_db.amount-50,
+            'total_amount':order_db.amount,
         }
         pdf = render_to_pdf('invoice.html', data)
         return HttpResponse(pdf, content_type='application/pdf')

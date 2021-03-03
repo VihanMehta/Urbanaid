@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from prof_base.models import Professional_mst
+from admin_base.models import Professional_mst
 from django.contrib import messages
 from django.contrib.sessions.models import Session
 
@@ -96,6 +96,7 @@ def changepass(request):
                     usr.save()
                     sucess="Hurrey ! Password Successfully Changed !"
                 else:
+
                     error="Enter valid Current Password !"
                     return render(request,"Prof-change-password.html",{'error':error,'sucess':sucess})
             return render(request,"Prof-change-password.html",{'error':error,'sucess':sucess})

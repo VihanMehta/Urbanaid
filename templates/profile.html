@@ -121,22 +121,20 @@
 																	<td>{{i.ServiceName}}</td>
 																	<td>{{i.date}} <span class="d-block text-info">{{i.slot}}</span></td>
 																	<td>{{i.datetime_of_payment}}</td>
-																	<td>{{i.amount}}</td>
+																	<td>Rs. {{i.amount}}</td>
 																	{% if i.status == 1 %}												
 																	<td><span class="badge badge-pill bg-success-light">PENDING</span></td>
 																	{% elif i.status == 2 %}
-																	<td><span class="badge badge-pill bg-success-light">ACCEPTED</span></td>
+																	<td><span class="badge badge-pill bg-warning-light">ACCEPTED</span></td>
 																	{% elif i.status == 3 %}
-																	<td><span class="badge badge-pill bg-success-light">DECLINED</span></td>
+																	<td><span class="badge badge-pill bg-info-light">DECLINED</span></td>
 																	{% endif %}	
 																	<td class="text-right">
 																		<div class="table-action">
-																			<a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
+																			<a href="/generateinvoice/{{i.order_id}}/" class="btn btn-sm bg-primary-light">
 																				<i class="fas fa-print"></i> Print
 																			</a>
-																			<a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-																				<i class="far fa-eye"></i> View
-																			</a>
+					
 																		</div>
 																	</td>
 																</tr>

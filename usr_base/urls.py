@@ -15,5 +15,5 @@ urlpatterns = [
     path('change_pass',views.changpass),
     path('change_email',views.emailchange),
     path('history',views.history),
-    path('generateinvoice/<str:oder_id>/', GenerateInvoice.as_view(), name = 'generateinvoice'),
+    path('generateinvoice/<str:order_id>/', GenerateInvoice.as_view(), name = 'generateinvoice'),
 ]

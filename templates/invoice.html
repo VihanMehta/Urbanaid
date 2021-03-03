@@ -2,7 +2,7 @@
 <html lang="en">
 {% load static %}
 <head>
-  <title>Invoice WonderShop</title>
+  <title>Invoice UrbanAid</title>
 <style>
   .clearfix:after {
   content: "";
@@ -149,21 +149,20 @@ footer {
     <div id="logo" style="display:flex; justify-content:center; align-items:center;">
       {#<img src="static/firstapp/images/logo.png" class="brand-logo" width=60 height=60>#} <!--not working-->
       {#<img src="static/logo.png" class="brand-logo" height="200px">#} <!--not working-->
-      <img src="D:\Mastering Django\firstproject\firstapp\logo.png" class="brand-logo" width=60 height=60>
-      <h1 class="brand-name">WonderShop</h1>
+      <img src="C:\Users\Montu Mehta\Desktop\Urban AId\urbanaid\static\images\logo.png" class="brand-logo" width=60 height=60>
+      <h1 class="brand-name">Urban Aid</h1>
     </div>
     <h1>INVOICE</h1>
     <div id="company" class="clearfix">
-      <div>WonderShop</div>
-      <div><a href="mailto:company@example.com">company@example.com</a></div>
-      <div><a href="www.wondershop.in:8000">www.wondershop.in:8000</a></div>
+      <div>Urban Aid</div>
+      <div><a href="mailto:company@example.com">UrbanAid@example.com</a></div>
+      <div><a href="http://127.0.0.1:8000/">http://www.urbanaid.com/</a></div>
     </div>
     <div id="project">
       <div><span>CLIENT:</span> {{name}}</div>
       <div><span>EMAIL:</span> <a href="mailto:{{user_email}}">{{user_email}}</a></div>
       <div><span>DATE:</span> {{date}}</div>
       <div><span>INVOICE ID:</span> {{order_id}}</div>
-      <div><span>TRANSACTION ID:</span> {{transaction_id}}</div>
     </div>
     <br>
     <br>
@@ -172,24 +171,30 @@ footer {
       <table class="table" style="width:100%">
           <thead>
               <tr>
-                  <th scope="col">PRODUCT</th>
+                  <th scope="col">NO.</th>
+                  <th scope="col">Service</th>
                   <th scope="col">QUANTITY</th>
                   <th scope="col">PRICE</th>
+
               </tr>
           </thead>
           <tbody>
-              {% for i in order.productinorder_set.all %}
               <tr>
-                  <td scope="row">{{i.product}}</td>
-                  <td>{{i.quantity}}</td>
-                  <td>{{i.price}}</td>
-                  
+                  <td>1</td>
+                  <td scope="row">{{service}}</td>
+                  <td>1</td>
+                  <td>Rs. {{amount}}</td>       
               </tr>
-              {% endfor %}
+              <tr>
+                  <td>2</td>
+                  <td scope="row">Service Charges and TAX </td>
+                  <td>1</td>
+                  <td>Rs. 50</td>       
+              </tr>
               <tr>
                   <td scope="row"></td>
                   <td>TOTAL: </td>
-                  <td>{{amount}}</td>
+                  <td>{{total_amount}}</td>
                   
               </tr>
           </tbody>
