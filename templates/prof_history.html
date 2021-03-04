@@ -123,7 +123,7 @@
 															<table class="table table-hover table-center mb-0">
 																<thead>
 																	<tr>
-																		<th>Client UserID </th>
+																		<th>Client Name </th>
 																		<th> OrderId</th>
 																		<th>Service</th>
 																		<th>Order Date</th>							
@@ -138,7 +138,7 @@
 																<tbody>
 																	<tr>
 																		
-																		<td>{{i.user}}</td>
+																		<td >{{i.UserName.FirstName}} {{i.UserName.LastName}}</td>
 																		<td class="text-danger">#{{i.order_id}}</td>
 																		<td>{{i.ServiceName}}</td>
 																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
@@ -192,16 +192,7 @@
 
 
 																		
-																		<td class="text-right">
 																		
-																			<div class="table-action">
-														
-																				<a href="/generateinvoice/{{i.order_id}}/" class="btn btn-sm bg-primary-light">
-																				<i class="fas fa-print"></i> Print
-																				</a>
-																			</div>
-																	
-																		</td>
 																	</tr>
 																
 																</tbody> 

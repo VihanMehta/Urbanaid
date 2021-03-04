@@ -58,8 +58,8 @@ def booking(request,**kwargs):
             url_slug=kwargs['slug']
             service= Service_mst.objects.get(slug=url_slug)
             prof=service.Professionalid
-             
-            print(service.ServiceName)
+          
+            print()
             if request.method=='POST':
                 date=request.POST.get("date")  
                 Usr_choice=request.POST.get("slot")         
@@ -81,13 +81,13 @@ def booking(request,**kwargs):
                             Time=Usr_choice
                             global Date
                             Date=date
-                            book=booking_slot.objects.create(user=request.session['user'],ServiceName=service.ServiceName) 
+                            book=booking_slot.objects.create(UserName=User_mst.objects.get(UserName=request.session['user']),ServiceName=service.ServiceName) 
                             book.save()
                     except:
                         status=True
                         Time=Usr_choice
                         Date=date
-                        book=booking_slot.objects.create(user=request.session['user'],ServiceName=service.ServiceName)
+                        book=booking_slot.objects.create(UserName=User_mst.objects.get(UserName=request.session['user']),ServiceName=service.ServiceName)
                         book.save()
 
                     return render(request,"booking.html",{'service':service,'prof':prof,'sucess':sucess,'error':error,'confirm_date':date,'confirm_time':Usr_choice,'status':status})       
@@ -104,6 +104,8 @@ def checkout(request,**kwargs):
     order_amount=None
     order_id=None
     add=None
+    user=User_mst.objects.get(UserName=request.session['user'])
+    user_id=user.id
     pincode=None
     url_slug=kwargs['slug']
     service= Service_mst.objects.get(slug=url_slug)
@@ -117,7 +119,7 @@ def checkout(request,**kwargs):
         pincode=request.POST.get("pcode")
         status=True
         try:       
-            book=booking_slot.objects.get(ServiceName=service.ServiceName,razorpay_orderId=None,user=request.session['user'])
+            book=booking_slot.objects.get(ServiceName=service.ServiceName,UserName=User_mst.objects.get(UserName=request.session['user']),razorpay_orderId=None)
         except:
             return HttpResponse("Error 505")
         book.ServiceName=service.ServiceName

@@ -1,19 +1,27 @@
 from django.db import models
-
+from usr_base.models import User_mst
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Q
 
-
+gender=(
+       ('F','F'),
+       ('M','M'),
+   )
 class Professional_mst(models.Model):
+
+    
     UserName = models.CharField(max_length=10, null=False, unique=True)
     Password = models.CharField(max_length=15, null=False)
     FirstName = models.CharField(max_length=10, null=False)
     LastName = models.CharField(max_length=10, null=False)
-    Gender = models.CharField(max_length=1, null=False)
+    
+    Gender = models.CharField(choices = gender,max_length=1,default=1)
     Email = models.CharField(max_length=30, null=False, unique=True)
     ContactNo = models.CharField(max_length=10, null=False, unique=True)
     Qualification = models.CharField(max_length=50, null=False)
+    address =models.CharField(max_length=500, null=True,blank=True)
+    Postcode= models.CharField(max_length=10, null=True,blank=True)
 
     def __str__(self):
         return (self.UserName)
@@ -74,7 +82,7 @@ class booking_slot(models.Model):
     ServiceName=models.CharField(max_length=255 ,null=True, blank=True)
     slot=models.CharField(max_length=255 ,null=True, blank=True)
     date=models.CharField(max_length=60, null=True, blank=True)
-    user=models.CharField(max_length=60, null=True, blank=True)
+    UserName  = models.ForeignKey(User_mst, on_delete=models.CASCADE,related_name='user')
     datetime_of_payment = models.DateTimeField(default=timezone.now)
     professional=models.CharField(max_length=60, null=True, blank=True)
     razorpay_orderId=models.CharField(max_length=255 ,null=True, blank=True)
@@ -96,13 +104,13 @@ class booking_slot(models.Model):
     @staticmethod
     def get_order_history_data(user):
         try:
-            return booking_slot.objects.filter(status=4,user=user,payment_status=1)
+            return booking_slot.objects.filter(status=4,UserName=user,payment_status=1)
         except:
             return False
     @staticmethod
     def get_order_data(user):
         try:
-            return booking_slot.objects.filter(~Q(status=4),user=user,payment_status=1)
+            return booking_slot.objects.filter(~Q(status=4),UserName=user,payment_status=1)
         except:
             return False
 

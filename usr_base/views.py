@@ -140,14 +140,14 @@ def category(request):
 #------ order History--------------------
 def history(request):
     user=request.session['user']
-    orders=booking_slot.get_order_history_data(user)
+    orders=booking_slot.get_order_history_data(User_mst.objects.get(UserName=request.session['user']))
     print(orders)
     return render(request,"orders_history.html",{'orders':orders})
 #------------------- User Profile -------------------------
 
 def profile(request):
     user=request.session['user']
-    orders=booking_slot.get_order_data(user)
+    orders=booking_slot.get_order_data(User_mst.objects.get(UserName=request.session['user']))
     print(orders)
     return render(request,"profile.html",{'orders':orders})
 
@@ -244,7 +244,7 @@ class GenerateInvoice(View):
     def get(self, request, order_id, *args, **kwargs):
         try:
             user=User_mst.objects.get(UserName=request.session['user'])
-            order_db = booking_slot.objects.get(order_id = order_id, user = request.session['user'], payment_status = 1)     #you can filter using order_id as well
+            order_db = booking_slot.objects.get(order_id = order_id, UserName = User_mst.objects.get(UserName=request.session['user']), payment_status = 1)     #you can filter using order_id as well
         except:
             return HttpResponse("505 Not Found")
         data = {

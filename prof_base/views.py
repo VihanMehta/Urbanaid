@@ -12,8 +12,10 @@ def prof_login(request):
                 Password = request.POST.get('psw')
                 try:
                     match=Professional_mst.objects.get(UserName=UserName)
-                    ps=match.Password
-                    if ps==Password:
+                except:
+                    return render(request,"Prof_login.html",{'error':error_msg})
+                ps=match.Password
+                if ps==Password:
                         request.session['professional']=UserName
                         request.session['profname']=match.FirstName+' '+match.LastName
                         request.session['proffname']=match.FirstName
@@ -25,11 +27,9 @@ def prof_login(request):
                         request.session['profadd']=match.address
                         request.session['profpcode']=match.Postcode
                         return redirect("dashbord")
-                    else:
+                else:
                         error_msg="Enter Valid Password !"
                         return render(request,"Prof_login.html",{'error':error_msg})
-                except:
-                    return render(request,"Prof_login.html",{'error':error_msg})
     return render(request,"Prof_login.html",{'error':error_msg})
             
         

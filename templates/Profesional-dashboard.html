@@ -37,9 +37,9 @@
 										<a href="#" class="booking-doc-img">
 										{% if request.session.profgender == 'M' %}
 									<img src="{% static '\images\male.png' %}" alt="User Image">
-								{% else %}
+										{% elif request.session.profgender == 'F' %}
 									<img src="{% static '\images\female.png' %}" alt="User Image">
-								{% endif %}
+										{% endif %}
 										</a>
 										<div class="profile-det-info">
 											<h3>{{request.session.profname}}</h3>
@@ -137,7 +137,7 @@
 															<table class="table table-hover table-center mb-0">
 																<thead>
 																	<tr>
-																		<th>Client UserID </th>
+																		<th>Client Name </th>
 																		<th> OrderId</th>
 																		<th>Service</th>
 																		<th>Order Date</th>							
@@ -152,7 +152,7 @@
 																<tbody>
 																	<tr>
 																		
-																		<td >{{i.user}}</td>
+																		<td >{{i.UserName.FirstName}} {{i.UserName.LastName}}</td>
 																		<td class="text-danger">#{{i.order_id}}</td>
 																		<td>{{i.ServiceName}}</td>
 																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
@@ -187,6 +187,10 @@
 																					<li>
 																						<span class="title">Pincode:</span>
 																						<span class="text">{{i.pincode}}</span>
+																					</li>
+																					<li>
+																						<span class="title">Contact No:</span>
+																						<span class="text">{{i.UserName.ContactNo}} </span>
 																					</li>
 																					<li>
 																						<span class="title">Confirm Date:</span>
@@ -240,32 +244,82 @@
 															<table class="table table-hover table-center mb-0">
 																<thead>
 																	<tr>
-																		<th>Client UserID </th>
+																		<th>Client Name </th>
 																		<th> OrderId</th>
 																		<th>Service</th>
 																		<th>Order Date</th>							
 																		<th>Paid Amount</th>
+																		<th>More Information</th>
+
 																		<th class="text-center"></th>
-																		
+																		<th></th>
 																	</tr>
 																</thead>
 																{% for i in accepted_orders  %}
 																<tbody>
-																	<td>{{i.user}}</td>
+																	<td >{{i.UserName.FirstName}} {{i.UserName.LastName}}</td>
 																		<td class="text-danger">#{{i.order_id}}</td>
 																		<td>{{i.ServiceName}}</td>
 																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
 																		<td class="text-center">Rs.{{i.amount}}</td>
+																		<td class="text-center"><a href="#" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#{{i.order_id}}">
+																				<i class="far fa-eye"></i> View </a></td>
+																		
+																
+																		<!-- more-info pop up -->
+																<div class="modal fade custom-modal" id="{{i.order_id}}">
+																	<div class="modal-dialog modal-dialog-centered">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h5 class="modal-title">Booking Details</h5>
+																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																					<span aria-hidden="true">&times;</span>
+																				</button>
+																			</div>
+																			<div class="modal-body">
+																				<ul class="info-details">
+																					<li>
+																						<div class="details-header">
+																							<div class="row">
+																								<div class="col-md-6">
+																									<span class="title">Address:</span>
+																									<span class="text">{{i.address}}</span>
+																								</div>
+																								
+																							</div>
+																						</div>
+																					</li>
+																					<li>
+																						<span class="title">Pincode:</span>
+																						<span class="text">{{i.pincode}}</span>
+																					</li>
+																					<li>
+																						<span class="title">Contact No:</span>
+																						<span class="text">{{i.UserName.ContactNo}} </span>
+																					</li>
+																					<li>
+																						<span class="title">Confirm Date:</span>
+																						<span class="text">{{i.date}}</span>
+																					</li>
+															
+																					<li>
+																						<span class="title">Paid Amount</span>
+																						<span class="text">Rs. {{i.amount}}</span>
+																					</li>
+																				</ul>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<!-- /more-info pop up -->
 																		<td class="text-right">
 																			<div class="table-action">
-																				<a href="/generateinvoice/{{i.order_id}}/" class="btn btn-sm bg-primary-light">
-																				<i class="fas fa-print"></i> Print
-																				</a>
+																				
 																		<form method="POST" id="{{i.id}}">
       																		{%csrf_token%}
 																					  <input type="hidden" name="order_id" value="{{i.order_id}}">
 																				<button type="submit" form="{{i.id}}" name="status" value="4" class="btn-block btn-sm bg-success-light">
-																					<i class="fas fa-check"></i> Click Here after succesfully Order complition
+																					<i class="fas fa-check"></i> Complete Order
 																				</button>
 																		</form>
 																			</div>
@@ -287,7 +341,7 @@
 															<table class="table table-hover table-center mb-0">
 																<thead>
 																	<tr>
-																		<th>Client UserID </th>
+																		<th>Client Name </th>
 																		<th>Declined OrderId</th>
 																		<th>Service</th>
 																		<th>Order Date</th>							
@@ -297,7 +351,7 @@
 																</thead>
 															{% for i in declined_orders %}
 																<tbody>
-																	<td>{{i.user}}</td>
+																	<td >{{i.UserName.FirstName}} {{i.UserName.LastName}}</td>
 																		<td class="text-danger">#{{i.order_id}}</td>
 																		<td>{{i.ServiceName}}</td>
 																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
