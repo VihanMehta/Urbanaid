@@ -175,13 +175,17 @@
 																						<span class="text">{{i.pincode}}</span>
 																					</li>
 																					<li>
+																						<span class="title">Contact No:</span>
+																						<span class="text">{{i.UserName.ContactNo}} </span>
+																					</li>
+																					<li>
 																						<span class="title">Confirm Date:</span>
 																						<span class="text">{{i.date}}</span>
 																					</li>
 															
 																					<li>
 																						<span class="title">Paid Amount</span>
-																						<span class="text">Rs. {{i.amount}}</span>
+																						<span class="text">Rs. {{i.amount|add:"-50"}}</span>
 																					</li>
 																				</ul>
 																			</div>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category_mst,Service_mst,Professional_mst,booking_slot
+from .models import *
 @admin.register(Category_mst)
 class CategoryAdmin(admin.ModelAdmin):
      list_display= ['CategoryName','slug']
@@ -24,6 +24,9 @@ class ProfesionalAdmin(admin.ModelAdmin):
     list_editable=['slot','date','payment_status','status']
     list_filter=['date','payment_status','status']
 
+@admin.register(feedback_mst)
+class ProfesionalAdmin(admin.ModelAdmin):
+    list_display= ['order_id','UserName','Professional','feedback']
 
 
     

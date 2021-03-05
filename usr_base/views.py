@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, HttpResponseRedirect
 from usr_base.models import User_mst , contactus
 from django.views.generic import TemplateView
-from admin_base.models import booking_slot
+from admin_base.models import booking_slot,feedback_mst,Professional_mst
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.sessions.models import Session
 from django.views import View
@@ -139,17 +139,48 @@ def category(request):
 
 #------ order History--------------------
 def history(request):
-    user=request.session['user']
-    orders=booking_slot.get_order_history_data(User_mst.objects.get(UserName=request.session['user']))
-    print(orders)
-    return render(request,"orders_history.html",{'orders':orders})
+            feedback_data=None
+            user=request.session['user']
+            try:
+                orders=booking_slot.get_order_history_data(User_mst.objects.get(UserName=request.session['user']))
+            except:
+                return render(request,"orders_history.html")
+            if request.method=='POST':
+                order_id=request.POST.get('order_id')
+                prof=request.POST.get('prof')
+                user=request.POST.get('user')
+                service=request.POST.get('service')
+                rate=request.POST.get('rate')
+                feedback=request.POST.get('feedback')
+                # print(order_id,prof,user,service,rate,feedback)
+                data=feedback_mst(order_id=order_id,
+                                UserName=User_mst.objects.get(UserName=user),
+                                ServiceName=service,
+                                Professional=Professional_mst.objects.get(UserName=prof) ,
+                                rate=rate,feedback=feedback
+                                )
+                data.save()
+                try:
+                    reviews_check=booking_slot.objects.get(order_id=order_id)
+                    print(reviews_check)
+                    reviews_check.Reviews=True
+                    reviews_check.save()
+                except:
+                    return HttpResponse("  gand maray")
+                feedback_data=feedback_mst.objects.all()
+                return render(request,"orders_history.html",{'orders':orders,'feedback_data':feedback_data})
+            return render(request,"orders_history.html",{'orders':orders,'feedback_data':feedback_data})
+
 #------------------- User Profile -------------------------
 
 def profile(request):
-    user=request.session['user']
-    orders=booking_slot.get_order_data(User_mst.objects.get(UserName=request.session['user']))
-    print(orders)
-    return render(request,"profile.html",{'orders':orders})
+    try:
+        if request.session['user']:
+            user=request.session['user']
+            orders=booking_slot.get_order_data(User_mst.objects.get(UserName=request.session['user']))
+            return render(request,"profile.html",{'orders':orders})
+    except:
+        return redirect("login")
 
 #------ update_profile---------------------
 

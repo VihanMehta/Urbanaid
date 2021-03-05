@@ -36,21 +36,24 @@ def search(request):
     
 
 #---- service in details-------------------------
-class servicedetailsView(TemplateView):
-    template_name="single.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        url_slug=self.kwargs['slug']
-        services_list= Service_mst.objects.get(slug=url_slug)
-        prof=services_list.Professionalid
-        data = Professional_mst.objects.get(UserName=prof)
-        context['prof'] = data
-        context['services_list'] = services_list
-        return context
+def serviceInDetails(request,**kwargs):
+    url_slug=kwargs['slug']
+    feedback_data=None
+    services_list= Service_mst.objects.get(slug=url_slug)
+    prof=services_list.Professionalid
+    data = Professional_mst.objects.get(UserName=prof)
+    try:
+        feedback_data=feedback_mst.get_data_by_service(services_list.ServiceName)
+        print(feedback_data)
+    except:
+        return render(request,"single.html",{'prof':prof,'services_list':services_list,'feedback_data':feedback_data})
+    return render(request,"single.html",{'prof':prof,'services_list':services_list,'feedback_data':feedback_data})
+    
    
  #--------- Booking ---------
 def booking(request,**kwargs):
+    try:
+        if request.session['user']:
             status=None
             sucess=None
             error=None
@@ -91,9 +94,13 @@ def booking(request,**kwargs):
                         book.save()
 
                     return render(request,"booking.html",{'service':service,'prof':prof,'sucess':sucess,'error':error,'confirm_date':date,'confirm_time':Usr_choice,'status':status})       
-            return render(request,"booking.html",{'service':service,'prof':prof})
+    except:
+        return redirect("login")
+    return render(request,"booking.html",{'service':service,'prof':prof})
         
 #------- add Payment gateway--------------------
+
+
 
 
  #--------- Checkout ---------
@@ -107,76 +114,86 @@ def checkout(request,**kwargs):
     user=User_mst.objects.get(UserName=request.session['user'])
     user_id=user.id
     pincode=None
-    url_slug=kwargs['slug']
-    service= Service_mst.objects.get(slug=url_slug)
-    prof=service.Professionalid 
-    name=Professional_mst.objects.get(UserName=service.Professionalid)
-    prof_name=name.UserName
-    final_price=int(50+service.price)
-    print(Time,Date)
-    if request.method=='POST':
-        add=request.POST.get("add")
-        pincode=request.POST.get("pcode")
-        status=True
-        try:       
-            book=booking_slot.objects.get(ServiceName=service.ServiceName,UserName=User_mst.objects.get(UserName=request.session['user']),razorpay_orderId=None)
-        except:
-            return HttpResponse("Error 505")
-        book.ServiceName=service.ServiceName
-        book.slot=Time
-        book.date=Date
-        book.amount=final_price
-        book.professional=prof_name
-        book.address=add
-        book.pincode=pincode
-        amount=final_price
-        book.save()
-        data_save="data successfully Save !"
-        order_amount = final_price*100
-        order_currency = 'INR'
-        razorpay_order=razorpay_client.order.create(dict(amount=order_amount,currency=order_currency,receipt=book.order_id,payment_capture='0'))
-        razor_id=razorpay_order['id']
-        book.razorpay_orderId=razor_id
-        book.save()
-        return render(request,'checkout.html',{'service':service,'order_id':razor_id,'price':final_price,'final_price':int(final_price*100),'prof':prof,'order_amount':order_amount,'data_save':data_save,'status':status})
-    return render(request,'checkout.html',{'service':service,'order_id':razor_id,'price':final_price,'final_price':int(final_price*100),'prof':prof,'order_amount':order_amount,'data_save':data_save,'status':status})
+    try:
+        if request.session['user']:
+            url_slug=kwargs['slug']
+            service= Service_mst.objects.get(slug=url_slug)
+            prof=service.Professionalid 
+            name=Professional_mst.objects.get(UserName=service.Professionalid)
+            prof_name=name.UserName
+            final_price=int(50+service.price)
+            print(Time,Date)
+            if request.method=='POST':
+                add=request.POST.get("add")
+                pincode=request.POST.get("pcode")
+                status=True
+                try:       
+                    book=booking_slot.objects.get(ServiceName=service.ServiceName,UserName=User_mst.objects.get(UserName=request.session['user']),razorpay_orderId=None)
+                except:
+                    return HttpResponse("Error 505")
+                book.ServiceName=service.ServiceName
+                book.slot=Time
+                book.date=Date
+                book.amount=final_price
+                book.professional=prof_name
+                book.address=add
+                book.pincode=pincode
+                amount=final_price
+                book.save()
+                data_save="data successfully Save !"
+                order_amount = final_price*100
+                order_currency = 'INR'
+                razorpay_order=razorpay_client.order.create(dict(amount=order_amount,currency=order_currency,receipt=book.order_id,payment_capture='0'))
+                razor_id=razorpay_order['id']
+                book.razorpay_orderId=razor_id
+                book.save()
+                return render(request,'checkout.html',{'service':service,'order_id':razor_id,'price':final_price,'final_price':int(final_price*100),'prof':prof,'order_amount':order_amount,'data_save':data_save,'status':status})
+            return render(request,'checkout.html',{'service':service,'order_id':razor_id,'price':final_price,'final_price':int(final_price*100),'prof':prof,'order_amount':order_amount,'data_save':data_save,'status':status})
+    except:
+        return redirect('login')
+    return render(request,'checkout.html',{'service':service,'order_id':razor_id,'price':final_price,'final_price':int(final_price*100),'prof':prof,'order_amount':order_amount,'data_save':data_save,'status':status})            
 
-
+#------ payment --------------------
 @csrf_exempt
 def payment_status(request):
-    if request.method=='POST':
-        try:
-            payment_Id=request.POST.get('razorpay_payment_id','')
-            order_Id=request.POST.get('razorpay_order_id','')
-            signature=request.POST.get('razorpay_signature','')
-            param_dict={
-                'razorpay_payment_id': payment_Id,
-                'razorpay_order_id':order_Id,
-                'razorpay_signature':signature
-            }
-            try:
-                order_db=booking_slot.objects.get(razorpay_orderId=order_Id) 
-            except:
-                return render(request,"book-fail.html")
-            order_db.razorpay_payment_id=payment_Id
-            order_db.booked=True
-            order_db.save()
-            result=razorpay_client.utility.verify_payment_signature(param_dict)   
-            if result==None:
-                amount=order_db.amount*100
+    try:
+        if request.session['user']:
+            if request.method=='POST':
                 try:
-                    razorpay_client.payment.capture(payment_Id,amount)
-                    order_db.payment_status=1
+                    payment_Id=request.POST.get('razorpay_payment_id','')
+                    order_Id=request.POST.get('razorpay_order_id','')
+                    signature=request.POST.get('razorpay_signature','')
+                    param_dict={
+                        'razorpay_payment_id': payment_Id,
+                        'razorpay_order_id':order_Id,
+                        'razorpay_signature':signature
+                    }
+                    try:
+                        order_db=booking_slot.objects.get(razorpay_orderId=order_Id) 
+                    except:
+                        return render(request,"book-fail.html")
+                    order_db.razorpay_payment_id=payment_Id
+                    order_db.booked=True
                     order_db.save()
-                    return render(request,"book-sucess.html")
+                    result=razorpay_client.utility.verify_payment_signature(param_dict)   
+                    if result==None:
+                        amount=order_db.amount*100
+                        try:
+                            razorpay_client.payment.capture(payment_Id,amount)
+                            order_db.payment_status=1
+                            order_db.save()
+                            return render(request,"book-sucess.html")
+                        except:
+                            order_db.payment_status=2
+                            order_db.save()
+                            return render(request,"book-fail.html") 
+                    else:
+                        order_db.payment_status=2
+                        order_db.save()
+                        return render(request,"book-fail.html")
                 except:
-                    order_db.payment_status=2
-                    order_db.save()
-                    return render(request,"book-fail.html") 
-            else:
-                order_db.payment_status=2
-                order_db.save()
-                return render(request,"book-fail.html")
-        except:
-            return render(request,"book-fail.html")
+                    return render(request,"book-fail.html")
+                return render(request,"book-sucess.html")
+    except:
+        return redirect('login')
     return render(request,"book-sucess.html")

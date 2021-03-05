@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from admin_base.models import Professional_mst
 from django.contrib import messages
 from usr_base.models import User_mst
-from admin_base.models import booking_slot
+from admin_base.models import booking_slot,feedback_mst
 from django.contrib.sessions.models import Session
 
 def prof_login(request):
@@ -71,10 +71,10 @@ def history(request):
         if request.session['professional']:
             prof=request.session['professional']
             orders=booking_slot.get_completed_orders(prof)
-        return render(request,"prof_history.html",{'orders':orders})
+            return render(request,"prof_history.html",{'orders':orders})
     except:
         return redirect('proflogin')
-    return redirect('proflogin')
+    return render(request,"prof_history.html",{'orders':orders})
 
 
 #-------- profile------------------
@@ -99,14 +99,18 @@ def profile_set(request):
                 return render(request,"professional-profile-settings.html",{'msg':msg})
     except:
         return redirect("proflogin")
+    return render(request,"professional-profile-settings.html",{'msg':msg})
 
 #------- Reviews-----------------
 def review(request):
     try:
         if request.session['professional']:
-            return render(request,"reviews.html")
+            feedback_data=feedback_mst.get_data_by_professional(Professional_mst.objects.get(UserName=request.session['professional']))
+            print(feedback_data)
+            return render(request,"reviews.html",{'feedback_data':feedback_data})
+
     except:
-        return redirect("proflogin")
+       return redirect("proflogin")
 
 #---
 def changepass(request):

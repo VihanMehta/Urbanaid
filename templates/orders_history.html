@@ -111,6 +111,7 @@
 																	<th>Amount</th>
 																	<th>Status</th>
 																	<th></th>
+																	<th>Write Review</th>
 																</tr>
 															</thead>
 												
@@ -131,6 +132,70 @@
 				
 																		</div>
 																	</td>
+																	{% if i.Reviews %}
+																		<td class="text-center"><a href="#" class="btn btn-sm bg-danger-light" data-toggle="modal" data-target="#{{i.order_id}}">
+																		<i class="fas fa-feather-alt"></i>Reviews Submited </a></td>
+																	
+																	{% else %}
+																	<td class="text-center"><a href="#" class="btn btn-sm bg-warning-light" data-toggle="modal" data-target="#{{i.order_id}}">
+																				<i class="fas fa-feather-alt"></i>Write Reviews </a></td>
+																		
+																		<!-- reviews form -->
+																<div class="modal fade custom-modal" id="{{i.order_id}}">
+																	<div class="modal-dialog modal-dialog-centered">
+																		<div class="modal-content">
+																			<div class="modal-header bg-warning">
+																				<h5 class="modal-title text-dark">Feedback Form</h5>
+																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																					<span aria-hidden="true">&times;</span>
+																				</button>
+																			</div>
+																			<div class="modal-body">
+																			<form method="POST" id="{{i.id}}">
+      																		{%csrf_token%}
+																				<ul class="info-details">
+																					
+																					<li>
+																					<h5 class="title justify-content-center">Select Rating:</h5>
+																						<div class="row justify-content-center mx-0">
+																								<select name="rate" required>
+																									<option value="" > Select Ratings </option>
+																									<option value="1">1</option>
+																									<option value="2">2</option>
+																									<option value="3">3</option>
+																									<option value="5">4</option>
+																									<option value="5">5</option>
+																									
+																								</select>
+																						</div>
+																					</li>
+																					<li>
+																						<input type="hidden" name="order_id" value="{{i.order_id}}">
+																						<input type="hidden" name="user" value="{{i.UserName}}">
+																						<input type="hidden" name="prof" value="{{i.professional}}">
+																						<input type="hidden" name="service" value="{{i.ServiceName}}">
+																					</li>
+																					<li>
+																						<h5 class="title justify-content-center">Write feedback:</h5>
+														
+																						<textarea  placeholder=" Write your reviews Here upto 155 letters* " name="feedback"  maxlength="155"  class="form-control border" required></textarea>
+																					</li>
+															
+																					<li>
+																					<button type="submit" form="{{i.id}}" class="btn-block btn-sm bg-warning">
+																						<i class="fas fa-check"></i> Submit
+																					</button>
+																					</li>
+																					<li>
+																					</li>
+																				</ul>
+																				</form>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																{% endif %}
+																<!-- /Review form -->
 																</tr>
 
 															</tbody>

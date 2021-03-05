@@ -199,7 +199,7 @@
 															
 																					<li>
 																						<span class="title">Paid Amount</span>
-																						<span class="text">Rs. {{i.amount}}</span>
+																						<span class="text">Rs. {{i.amount|add:"-50"}}</span>
 																					</li>
 																				</ul>
 																			</div>
@@ -261,7 +261,7 @@
 																		<td class="text-danger">#{{i.order_id}}</td>
 																		<td>{{i.ServiceName}}</td>
 																		<td>{{i.date}}  <span class="d-block text-info">{{i.slot}}</span></td>
-																		<td class="text-center">Rs.{{i.amount}}</td>
+																		<td class="text-center">Rs.{{i.amount|add:"-50"}}</td>
 																		<td class="text-center"><a href="#" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#{{i.order_id}}">
 																				<i class="far fa-eye"></i> View </a></td>
 																		
@@ -304,7 +304,7 @@
 															
 																					<li>
 																						<span class="title">Paid Amount</span>
-																						<span class="text">Rs. {{i.amount}}</span>
+																						<span class="text">Rs. {{i.amount|add:"-50"}}</span>
 																					</li>
 																				</ul>
 																			</div>
@@ -317,6 +317,7 @@
 																				
 																		<form method="POST" id="{{i.id}}">
       																		{%csrf_token%}
+																			  
 																					  <input type="hidden" name="order_id" value="{{i.order_id}}">
 																				<button type="submit" form="{{i.id}}" name="status" value="4" class="btn-block btn-sm bg-success-light">
 																					<i class="fas fa-check"></i> Complete Order

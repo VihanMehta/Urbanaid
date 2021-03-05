@@ -2,6 +2,7 @@ from django.db import models
 from usr_base.models import User_mst
 from django.urls import reverse
 from django.utils import timezone
+import datetime
 from django.db.models import Q
 
 gender=(
@@ -9,8 +10,6 @@ gender=(
        ('M','M'),
    )
 class Professional_mst(models.Model):
-
-    
     UserName = models.CharField(max_length=10, null=False, unique=True)
     Password = models.CharField(max_length=15, null=False)
     FirstName = models.CharField(max_length=10, null=False)
@@ -92,6 +91,7 @@ class booking_slot(models.Model):
     amount=models.IntegerField(null=True, blank=True)
     status = models.IntegerField(choices = order_status, default=1)
     payment_status = models.IntegerField(choices = payment_status_choices, default=3)
+    Reviews=models.BooleanField(default=False)
     
     def __str__(self):
         return self.order_id
@@ -141,13 +141,30 @@ class booking_slot(models.Model):
             return booking_slot.objects.filter(status=4,professional=user,payment_status=1)
         except:
             return False
-            
-class payment_mst(models.Model):
-    order_id=models.ForeignKey('booking_slot', on_delete=models.CASCADE)
-    UserName=models.CharField(max_length=155 ,null=True, blank=True)
-    serviceName=models.CharField(max_length=255 ,null=True, blank=True)
-    payment_id=models.CharField(max_length=155 ,null=True, blank=True)
-    amount=models.IntegerField(null=True, blank=True)
+
+class feedback_mst(models.Model):
+    order_id=models.CharField(max_length=155 ,null=True)
+    UserName  = models.ForeignKey(User_mst, on_delete=models.CASCADE,related_name='feeduser')
+    ServiceName=models.CharField(max_length=255 ,null=True, blank=True)
+    Date = models.DateField(default=datetime.date.today)
+    Professional = models.ForeignKey(Professional_mst, on_delete=models.CASCADE,related_name='feedprofessional')
+    rate=models.CharField(choices=rate_choice ,max_length=5 , blank=True)
+    feedback = models.TextField(null=True)
+
+    @staticmethod
+    def get_data_by_service(service):
+        try:
+            return feedback_mst.objects.filter(ServiceName=service)
+        except:
+            return False
+    
+    @staticmethod
+    def get_data_by_professional(prof):
+        try:
+            return feedback_mst.objects.filter(Professional=prof)
+        except:
+            return False
 
     def __str__(self):
-        return self.payment_id
+        return self.order_id
+

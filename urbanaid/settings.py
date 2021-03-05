@@ -136,8 +136,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
 
 #auto session expiry in 15 min
-SESSION_COOKIE_AGE=9000
+SESSION_COOKIE_AGE=900
 
-#razorpay info
 Key_Id=''
 Key_Secret=''
