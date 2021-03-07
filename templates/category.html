@@ -10,7 +10,7 @@
 			<div class="col-md-12">
 				<!-- Advance Search -->
 				<div class="advance-search align-center">
-					<form method='GET' action='search'>
+					<form method='GET' action='\search'>
 					
 						<div class="form-row ">
 							<div class="form-group col-md-4">
@@ -19,7 +19,7 @@
 					
 							<div class="form-group col-md-2">
 
-								<button type="submit" class="btn bg-warning submit-btn">Search Now</button>
+								<button type="submit" class="btn bg-warning btn-lg">Search Now</button>
 							</div>
 						</div>
 					
@@ -31,25 +31,19 @@
 </section>
 <section class="section-sm">
 	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="search-result bg-gray">
-					<h2>Results For <strong class="text-danger">"{{query}}"</strong></h2>
-					
-				</div>
-			</div>
-		</div>
+		
 		<div class="row">
 			<div class="col-lg-3 col-md-4">
 				<div class="category-sidebar">
-				<div class="widget category-list">
+			<div class="widget category-list">
 	<h4 class="widget-header">Category</h4>
 	<ul class="category-list">
 	{% for c in categories %}
 		<li><a href="{% url 'urbanaid:serviceCategory' c.slug %}">{{c.CategoryName}} </a></li>
 	{% endfor %}
 	</ul>
-</div>	
+</div>
+
 <div class="widget category-list">
 	<h4 class="widget-header">filter</h4>
 	<ul class="category-list">

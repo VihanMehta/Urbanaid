@@ -131,7 +131,7 @@ a:focus {
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+-webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }
 input,
 button,
@@ -2361,7 +2361,7 @@ html.menu-opened body {
     line-height: 0;
     display: block;
     width: 20px;
-    height: 5px;
+    height: 10px;
     padding: 0;
     cursor: pointer;
     color: transparent;
@@ -2385,8 +2385,8 @@ html.menu-opened body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 20px;
-	height: 20px;
+	width: 30px;
+	height: 30px;
 	content: '-';
     text-align: center;
     opacity: .25;

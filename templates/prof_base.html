@@ -73,10 +73,10 @@
 							<li>
 								<a href="/prof/login"><strong>Professional Login</strong></a>
 							</li>
-							{%  if request.session.user %}
+							{%  if request.session.professional %}
 								<li class="login-link">
 								<a class='h6 font-weight-bolder' data-toggle="tooltip" data-placement="top" title="{{request.session.name}}'s Profile" class="view" href="/profile">
-							<i class="fas fa-user-circle "></i> My Account </a> 
+							<i class="fas fa-user-circle "></i> {{request.session.profname}} </a> 
 							</li>
 							{% else %}
 							<li class="login-link">

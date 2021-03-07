@@ -77,7 +77,7 @@
 							{%  if request.session.user %}
 								<li class="login-link">
 								<a class='h6 font-weight-bolder' data-toggle="tooltip" data-placement="top" title="{{request.session.name}}'s Profile" class="view" href="/profile">
-							<i class="fas fa-user-circle "></i> My Account </a> 
+							<i class="fas fa-user-circle "></i>{{request.session.name}}</a> 
 							</li>
 							{% else %}
 							<li class="login-link">
@@ -151,10 +151,10 @@
 						<h2>Popular Category</h2>
 						<ul class="list-inline">
 							<li class="list-inline-item">
-								<a href="/service"><i class="fa fa-grav"></i> Salon Experts </a>
+								<a href="/category/salon/"><i class="fa fa-grav"></i> Salon Experts </a>
 							</li>
 							<li class="list-inline-item">
-								<a href="/service"><i class="fa fa-cutlery"></i> Cuisines </a>
+								<a href="/category/cuisines/"><i class="fa fa-cutlery"></i> Cuisines </a>
 							</li>
 						</ul>
 					</div>
@@ -206,29 +206,30 @@
 				<div class="trending-ads-slide">
 					<div class="col-sm-12 col-lg-4">
 						<!-- product card -->
+				{% for fav in trend  %}
 <div class="product-item bg-light">
 	<div class="card">
 		<div class="thumb-content">
 			<!-- <div class="price">$200</div> -->
-			<a href="single.html">
-					<img class="card-img-top img-fluid" src="{% static '\images\products\products-1.jpg' %}" alt="Card image cap">
+			<a href="{% url 'urbanaid:serviceDetail' fav.slug %}">
+					<img class="card-img-top img-fluid" src="{{fav.image.url}}" alt="Card image cap">
 			</a>
 		</div>
 		<div class="card-body">
-		    <h4 class="card-title"><a href="single.html">South Indian</a></h4>
+		    <h4 class="card-title"><a href="{% url 'urbanaid:serviceDetail' fav.slug %}">{{fav.ServiceName}}</a></h4>
 		    <ul class="list-inline product-meta">
 		    	<li class="list-inline-item">
-		    		<a href="single.html"><i class="fa fa-folder-open-o"></i>Cuisines</a>
+		    		<a href="{% url 'urbanaid:serviceDetail' fav.slug %}"><i class="fa fa-folder-open-o"></i>{{fav.Categoryid.CategoryName}}</a>
 		    	</li>
 		    </ul>
-		    <p class="card-text">South Indian cuisine includes the cuisines of the five southern states of India—Andhra Pradesh, Karnataka, Kerala, Tamil Nadu and Telangana—and the union territories</p>
+		    <p class="card-text">{{fav.description}}</p>
 		    <div class="product-ratings">
 		    	<ul class="list-inline">
 		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
 		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
 		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
 		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
 		    	</ul>
 		    </div>
 		</div>
@@ -239,98 +240,8 @@
 
 					</div>
 					<div class="col-sm-12 col-lg-4">
-						<!-- product card -->
-<div class="product-item bg-light">
-	<div class="card">
-		<div class="thumb-content">
-			<!-- <div class="price">$200</div> -->
-			<a href="single.html">
-				<img class="card-img-top img-fluid" src="{% static '\images\products\products-2.jpg' %}" alt="Card image cap">
-			</a>
-		</div>
-		<div class="card-body">
-		    <h4 class="card-title"><a href="single.html">Grooming</a></h4>
-		    <ul class="list-inline product-meta">
-		    	<li class="list-inline-item">
-		    		<a href="single.html"><i class="fa fa-folder-open-o"></i>Salon services</a>
-		    	</li>
-		    </ul>
-		    <p class="card-text">Get at home best salon services by our expert professionals who tend to maintain complete hygiene</p>
-		    <div class="product-ratings">
-		    	<ul class="list-inline">
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-		    	</ul>
-		    </div>
-		</div>
-	</div>
-</div>
-					</div>
-					<div class="col-sm-12 col-lg-4">
-						<!-- product card -->
-<div class="product-item bg-light">
-	<div class="card">
-		<div class="thumb-content">
-			<!-- <div class="price">$200</div> -->
-			<a href="single.html">
-				<img class="card-img-top img-fluid" src="{% static '\images\products\products-3.jpg' %}" alt="Card image cap">
-			</a>
-		</div>
-		<div class="card-body">
-		    <h4 class="card-title"><a href="single.html">Punjabi</a></h4>
-		    <ul class="list-inline product-meta">
-		    	<li class="list-inline-item">
-		    		<a href="single.html"><i class="fa fa-folder-open-o"></i>Cuisines</a>
-		    	</li>
-		    </ul>
-		    <p class="card-text">Distinctively Punjabi cuisine is known for its rich, buttery flavours along with the extensive vegetarian dishes</p>
-		    <div class="product-ratings">
-		    	<ul class="list-inline">
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-		    	</ul>
-		    </div>
-		</div>
-	</div>
-</div>
-					</div>
-					<div class="col-sm-12 col-lg-4">
-						<!-- product card -->
-<div class="product-item bg-light">
-	<div class="card">
-		<div class="thumb-content">
-			<!-- <div class="price">$200</div> -->
-			<a href="single.html">
-				<img class="card-img-top img-fluid" src="{% static '\images\products\products-4.jpg' %}" alt="Card image cap">
-			</a>
-		</div>
-		<div class="card-body">
-		    <h4 class="card-title"><a href="single.html">Men's Grooming</a></h4>
-		    <ul class="list-inline product-meta">
-		    	<li class="list-inline-item">
-		    		<a href="single.html"><i class="fa fa-folder-open-o"></i>Salon Services</a>
-		    	</li>
-		    </ul>
-		    <p class="card-text">Get at home best men's grooming services by our expert professionals who tend to maintain complete hygiene.</p>
-		    <div class="product-ratings">
-		    	<ul class="list-inline">
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-		    	</ul>
-		    </div>
-		</div>
-	</div>
-</div>
-					</div>
+					{% endfor %}	
+
 				</div>
 			</div>			
 		</div>
@@ -341,82 +252,6 @@
 =            All Category Section            =
 ===========================================-->
 
-<section class=" section">
-	<!-- Container Start -->
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<!-- Section title -->
-				<div class="section-title">
-					<h2>All Categories</h2>
-				</div>
-				<div class="row">
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-home icon-bg-3"></i> 
-								<h4>Comming Soon</h4>
-							</div>
-							<ul class="category-list" >
-								<li><a href="/service">--------- <span>93</span></a></li>
-								<li><a href="/service">--------- <span>23</span></a></li>
-								<li><a href="/service">--------- <span>83</span></a></li>
-								<li><a href="/service">--------- <span>33</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /service List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-home icon-bg-3"></i> 
-								<h4>Cuisines</h4>
-							</div>
-							<ul class="category-list" >
-								<li><a href="/service">South Indian <span>393</span></a></li>
-								<li><a href="/service">Punjabi <span>23</span></a></li>
-								<li><a href="/service">Gujarati  <span>13</span></a></li>
-								<li><a href="/service">Bengali<span>43</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /service List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-home icon-bg-3"></i> 
-								<h4>Salon Services</h4>
-							</div>
-							<ul class="category-list" >
-								<li><a href="/service">Hair Styling <span>93</span></a></li>
-								<li><a href="/service">Nail treatments <span>23</span></a></li>
-								<li><a href="/service">Massages  <span>83</span></a></li>
-								<li><a href="/service">Skin Care <span>33</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /service List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-home icon-bg-3"></i> 
-								<h4>Comming Soon</h4>
-							</div>
-							<ul class="category-list" >
-								<li><a href="/service">--------- <span>93</span></a></li>
-								<li><a href="/service">--------- <span>23</span></a></li>
-								<li><a href="/service">--------- <span>83</span></a></li>
-								<li><a href="/service">--------- <span>33</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /service List -->
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Container End -->
-</section>
 
 <!--====================================
 =            Call to Action            =
@@ -430,7 +265,7 @@
 				<div class="content-holder">
 					<h2>Start exploring our professional services from today</h2>
 					<ul class="list-inline mt-30">
-						<li class="list-inline-item"><a class="btn btn-main" href="ad-listing.html">Book Service</a></li>
+						<li class="list-inline-item"><a class="btn btn-main" href="/service">Book Service</a></li>
 						<li class="list-inline-item"><a class="btn btn-secondary" href="/service">Browser Categories</a></li>
 					</ul>
 				</div>

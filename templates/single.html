@@ -54,7 +54,7 @@
 										
 										<div class="media-body">
 										<div class="name">
-												<h3>{{feed.UserName.FirstName}} {{feed.UserName.LastName}}</h3>
+												<strong class="">{{feed.UserName.FirstName}} {{feed.UserName.LastName}}</strong>
 											</div>
 											<!-- Ratings -->
 											<div class="ratings">
@@ -62,6 +62,7 @@
 													<li class="list-inline-item">
 														 <span class="btn btn-warning">{{feed.rate}}<i class="fa fa-star"></i></span>
 													</li>
+
 
 												</ul>
 											</div>
@@ -71,16 +72,17 @@
 											</div>
 				
 											<div class="review-comment">
-												<h4>
-													{{feed.feedback}}
-												</h4>
+												<h6>
+													<span >{{feed.feedback}}</span>
+												</h6>
 											</div>
 										</div>
 									</div>
+									
+									
 									{% endfor %}
-									
-									
 							</div>
+							
 							<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
 								
 									<div>

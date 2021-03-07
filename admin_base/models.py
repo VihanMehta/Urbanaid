@@ -63,6 +63,13 @@ class Service_mst(models.Model):
     def __str__(self):
         return self.ServiceName
 
+    @staticmethod
+    def get_tranding_service():
+        try:
+            return Service_mst.objects.filter(available=True,rate=5)
+        except:
+            return False
+
 
 class booking_slot(models.Model):
     order_status=(

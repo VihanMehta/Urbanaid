@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'usr_base',
     'prof_base',
     'admin_base',
@@ -137,6 +138,3 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
 
 #auto session expiry in 15 min
 SESSION_COOKIE_AGE=900
-
-Key_Id=''
-Key_Secret=''

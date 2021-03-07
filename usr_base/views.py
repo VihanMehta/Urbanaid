@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect, HttpResponseRedirect
 from usr_base.models import User_mst , contactus
+from admin_base.models import Service_mst
 from django.views.generic import TemplateView
 from admin_base.models import booking_slot,feedback_mst,Professional_mst
 from django.contrib.auth.hashers import make_password,check_password
@@ -9,7 +10,8 @@ from django.views import View
 curt_usr=None
 
 def index(request):
-        return render(request,'index.html')
+    trend=Service_mst.get_tranding_service()
+    return render(request,'index.html',{'trend':trend})
 
 #--------------------Registeration----------------------------
 class Register(View):
@@ -131,11 +133,6 @@ def usr_logout(request):
     except:
         return redirect('index')
     return redirect('index')
-
-#------------------- Category -------------------------
-
-def category(request):
-    return render(request,'category.html')
 
 #------ order History--------------------
 def history(request):
