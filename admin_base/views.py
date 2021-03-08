@@ -9,10 +9,14 @@ razorpay_client=razorpay.Client(auth=(settings.Key_Id,settings.Key_Secret))
 
 Time = None
 Date=None
+
+
+
+
 #----- paginator / page of service post---------------
 def service(request):
     categories = Category_mst.objects.all()
-    all_post = Paginator(Service_mst.objects.filter(available = True),3) #number of post per page
+    all_post = Paginator(Service_mst.objects.filter(available = True) ,3) #number of post per page
     page = request.GET.get('page')
     try:
 	    posts = all_post.page(page)

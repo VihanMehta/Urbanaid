@@ -9,10 +9,14 @@ from django.views import View
 
 curt_usr=None
 
+Gen_otp=None
+ 
 def index(request):
     trend=Service_mst.get_tranding_service()
     return render(request,'index.html',{'trend':trend})
+#------ forget Password-------------------
 
+ 
 #--------------------Registeration----------------------------
 class Register(View):
 
@@ -125,6 +129,91 @@ class Login(View):
         print(UserName, Password)
         return render(request, 'login.html', {'error': error_message})
 
+
+#---------- Password reset--------------------
+import math as m
+import random as r
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+
+def otp_on_email(email_id):
+    fromAdd = "demo@gmail.com"
+    senders_pass = "-----------PAssword--------"
+    toAdd = email_id
+
+    msg=MIMEMultipart()
+    msg['From']=fromAdd
+    msg['To']=toAdd
+    msg['Subject']="Urban AId  -OTP"
+
+    string = '0123456789'
+    OTP = "" 
+    varlen= len(string) 
+    for i in range(6) : 
+        OTP += string[m.floor(r.random() * varlen)] 
+
+    global Gen_otp
+    Gen_otp=OTP
+
+    body = """
+
+            Your OTP Is [ {} ] and you can use it for change Your Account password .  
+            _______________________________________________________________________
+            @Team Urbanaid
+            
+            """.format(OTP)
+    
+    msg.attach(MIMEText(body, 'plain'))
+    s=smtplib.SMTP('smtp.gmail.com',587)
+    s.starttls()
+    s.login(fromAdd,senders_pass)
+    text=msg.as_string()
+    s.sendmail(fromAdd,toAdd,text)
+    s.quit()
+    return OTP
+
+
+def passreset(request):
+    status=None
+    error=None
+    Username=None 
+    generated_otp=None
+    c_txt=None
+    g_otp=None
+    if request.method=="POST" and 'checkusr' in request.POST:
+        Username=request.POST.get('uname')
+        try:
+            check_usr=User_mst.objects.get(UserName=Username)
+        except:
+            error="Error ! User name is not found !"
+            return render(request,"password_reset.html",{'error':error,'status':status,'Username':Username})
+        status=True
+        toAdd=check_usr.Email
+        c_txt="OTP send on your email ({}*******{})".format(toAdd[0:3],toAdd[6:]) 
+        generated_otp=otp_on_email(toAdd)
+        print(generated_otp)   
+        return render(request,"password_reset.html",{'error':error,'status':status,'Username':Username,'alert':c_txt})
+
+    if request.method=="POST" and 'otpcheck' in request.POST:
+        status=True
+        uname=request.POST.get('uname')
+        otp=request.POST.get('otp')
+        passwd=request.POST.get('pass')
+        check_usr=User_mst.objects.get(UserName=uname)
+        print(otp,passwd,uname,g_otp)
+        if Gen_otp==otp:
+            check_usr.Password = make_password(passwd)
+            check_usr.save()
+            success='password change susscessfully'
+            status=None
+            return render(request,"password_reset.html",{'status':status,'success':success})
+        else:
+            error='You enterd wrong OTP'
+            status=None
+        return render(request,"password_reset.html",{'status':status,'error':error,'Username':Username,'alert':c_txt})
+    return render(request,"password_reset.html",{'status':status,'error':error,'Username':Username,'alert':c_txt})
 #-------------------user log out-------------------------
 
 def usr_logout(request):
@@ -318,4 +407,3 @@ def emailchange(request):
                 return render(request,'update_email.html')
     except:
         return redirect("login")
-
