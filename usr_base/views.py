@@ -139,8 +139,8 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 
 def otp_on_email(email_id):
-    fromAdd = "demo@gmail.com"
-    senders_pass = "-----------PAssword--------"
+    fromAdd = "storageforvihan@gmail.com"
+    senders_pass = "zxjlfkszsshyuovm"
     toAdd = email_id
 
     msg=MIMEMultipart()
@@ -161,7 +161,7 @@ def otp_on_email(email_id):
 
             Your OTP Is [ {} ] and you can use it for change Your Account password .  
             _______________________________________________________________________
-            @Team Urbanaid
+            @Team UrbanAid
             
             """.format(OTP)
     

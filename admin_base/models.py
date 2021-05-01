@@ -13,8 +13,7 @@ class Professional_mst(models.Model):
     UserName = models.CharField(max_length=10, null=False, unique=True)
     Password = models.CharField(max_length=15, null=False)
     FirstName = models.CharField(max_length=10, null=False)
-    LastName = models.CharField(max_length=10, null=False)
-    
+    LastName = models.CharField(max_length=10, null=False)  
     Gender = models.CharField(choices = gender,max_length=1,default=1)
     Email = models.CharField(max_length=30, null=False, unique=True)
     ContactNo = models.CharField(max_length=10, null=False, unique=True)
@@ -78,7 +77,6 @@ class booking_slot(models.Model):
         (3,'DECLINED'),
         (4,'COMPLETE'),
    )
-
     payment_status_choices = (
         (1, 'SUCCESS'),
         (2, 'FAILURE' ),

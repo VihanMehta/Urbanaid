@@ -82,11 +82,8 @@ WSGI_APPLICATION = 'urbanaid.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'UrbanAID',
-        'USER': 'postgres',
-        'PASSWORD': 'v112233',
-        'HOST': 'localhost',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -138,6 +135,6 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
 
 #auto session expiry in 15 min
 SESSION_COOKIE_AGE=900
-Key_Id=''
-Key_Secret=''
+Key_Id='rzp_test_W6q7OFdpX0wm3D'
+Key_Secret='cg9vdkvRJy03Mwj7u1zbm7gy'
 
